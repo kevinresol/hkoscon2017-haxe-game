@@ -8,8 +8,8 @@ class World {
 	
 	public function new() {
 		size = {
-			width: 1000,
-			height: 1000,
+			width: 2000,
+			height: 2000,
 		}
 	}
 	
@@ -80,7 +80,7 @@ class World {
 					var dy = object.y - other.y;
 					if(dx * dx + dy * dy < object.size * object.size) {
 						removable.push(other);
-						object.size += other.size/5;
+						object.size += other.size * 0.1;
 					}
 				}
 			}

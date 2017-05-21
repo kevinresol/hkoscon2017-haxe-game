@@ -23,9 +23,9 @@ class Main extends luxe.Game {
     override function ready() {
         world = new World();
         player = world.createPlayer();
-        for(i in 0...5)
+        for(i in 0...10)
             world.createAi();
-        for(i in 0...20)
+        for(i in 0...50)
             world.createFood();
             
     } //ready
