@@ -71,7 +71,25 @@ class World {
 			object.y += Math.sin(object.dir) * object.speed;
 		}
 		
-		// TODO: check collision
+		var removable = [];
+		
+		for(object in objects) {
+			for(other in objects) {
+				if(object.size > other.size) {
+					var dx = object.x - other.x;
+					var dy = object.y - other.y;
+					if(dx * dx + dy * dy < object.size * object.size) {
+						removable.push(other);
+						object.size += other.size/5;
+					}
+				}
+			}
+		}
+		
+		for(object in removable) {
+			remove(object);
+			if(object.type == Food) createFood();
+		}
 		
 		return objects;
 	}

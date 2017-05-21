@@ -48,6 +48,7 @@ class Main extends luxe.Game {
             player.speed = 0;
         }
         draw(world.update());
+        Luxe.camera.scale.set_xy(player.size / 40, player.size / 40);
         Luxe.camera.pos.set_xy(player.x - mid.x, player.y - mid.y);
     } //update
     
