@@ -27,6 +27,7 @@ class Main extends luxe.Game {
             world.createAi();
         for(i in 0...20)
             world.createFood();
+            
     } //ready
 
     override function onkeyup(event:KeyEvent) {
@@ -38,15 +39,16 @@ class Main extends luxe.Game {
     } //onkeyup
 
     override function update(delta:Float) {
+        var mid = Luxe.screen.mid;
         if(touched) {
             var cursor = Luxe.screen.cursor.pos;
-            player.dir = Math.atan2(cursor.y - Luxe.screen.mid.y, cursor.x - Luxe.screen.mid.x);
+            player.dir = Math.atan2(cursor.y - mid.y, cursor.x - mid.x);
             player.speed = 3;
         } else {
             player.speed = 0;
         }
         draw(world.update());
-        Luxe.camera.pos.set_xy(player.x - Luxe.screen.mid.x, player.y - Luxe.screen.mid.y);
+        Luxe.camera.pos.set_xy(player.x - mid.x, player.y - mid.y);
     } //update
     
     var touched:Bool = false;
@@ -75,6 +77,7 @@ class Main extends luxe.Game {
                 r: object.size, 
                 color: new Color().rgb(object.color),
                 immediate: true, // should use a sprite/visual
+                depth: object.depth,
             });
         }
     }

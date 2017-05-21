@@ -13,6 +13,7 @@ typedef Object = {
 	size:Float,
 	dir:Float,
 	speed:Float,
+	depth:Float,
 	x:Float,
 	y:Float,
 }

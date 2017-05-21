@@ -32,6 +32,7 @@ class World {
 			speed: 3,
 			x: Std.random(size.width),
 			y: Std.random(size.height),
+			depth: 3,
 		});
 	}
 	
@@ -45,6 +46,7 @@ class World {
 			speed: 1,
 			x: Std.random(size.width),
 			y: Std.random(size.height),
+			depth: 2,
 		});
 	}
 	
@@ -58,6 +60,7 @@ class World {
 			speed: 0,
 			x: Std.random(size.width),
 			y: Std.random(size.height),
+			depth: 1,
 		});
 	}
 	
