@@ -15,20 +15,47 @@ class World {
 	
 	public function insert(object:Object) {
 		objects.push(object);
+		return object;
 	}
 	
 	public function remove(object:Object) {
 		objects.remove(object);
 	}
 	
+	public function createPlayer() {
+		return insert({
+			id: count++,
+			type: Player,
+			color: 0xfffffff,
+			size: 40,
+			dir: Math.random() * Math.PI * 2,
+			speed: 3,
+			x: Std.random(size.width),
+			y: Std.random(size.height),
+		});
+	}
+	
 	public function createAi() {
-		insert({
+		return insert({
 			id: count++,
 			type: Ai,
 			color: Std.random(1 << 24),
-			size: 10,
+			size: 40,
 			dir: Math.random() * Math.PI * 2,
 			speed: 1,
+			x: Std.random(size.width),
+			y: Std.random(size.height),
+		});
+	}
+	
+	public function createFood() {
+		return insert({
+			id: count++,
+			type: Food,
+			color: Std.random(1 << 24),
+			size: 10,
+			dir: Math.random() * Math.PI * 2,
+			speed: 0,
 			x: Std.random(size.width),
 			y: Std.random(size.height),
 		});
@@ -40,6 +67,9 @@ class World {
 			object.x += Math.cos(object.dir) * object.speed;
 			object.y += Math.sin(object.dir) * object.speed;
 		}
+		
+		// TODO: check collision
+		
 		return objects;
 	}
 }
