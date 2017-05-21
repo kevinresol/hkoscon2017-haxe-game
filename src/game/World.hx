@@ -11,6 +11,9 @@ class World {
 			width: 2000,
 			height: 2000,
 		}
+		
+		for(i in 0...10) createAi();
+		for(i in 0...50) createFood();
 	}
 	
 	public function insert(object:Object) {
@@ -71,7 +74,7 @@ class World {
 			object.y += Math.sin(object.dir) * object.speed;
 		}
 		
-		var removable = [];
+		var removed = [];
 		
 		for(object in objects) {
 			for(other in objects) {
@@ -79,19 +82,22 @@ class World {
 					var dx = object.x - other.x;
 					var dy = object.y - other.y;
 					if(dx * dx + dy * dy < object.size * object.size) {
-						removable.push(other);
+						removed.push(other);
 						object.size += other.size * 0.1;
 					}
 				}
 			}
 		}
 		
-		for(object in removable) {
+		for(object in removed) {
 			remove(object);
 			if(object.type == Food) createFood();
 		}
 		
-		return objects;
+		return {
+			objects: objects,
+			removed: removed,
+		}
 	}
 }
 
