@@ -14,9 +14,9 @@ class Main extends luxe.Game {
     
     var world:World;
     var state:GameState;
-    var player:Object;
+    var connected = false;
     var id:Int;
-    var mp:Bool = false;
+    var mp:Bool = true;
     var ws:js.html.WebSocket; // TODO: cross platform
 
     override function config(config:GameConfig) {
@@ -32,17 +32,18 @@ class Main extends luxe.Game {
 
     override function ready() {
         if(mp) {
-            ws = new js.html.WebSocket('ws://localhost:8888');
+            ws = new js.html.WebSocket('ws://192.168.0.110:8888');
+            ws.onopen = function() ws.send(Serializer.run(Join));
             ws.onmessage = function(msg) {
                 var msg:Message = Unserializer.run(msg.data);
                 switch msg {
-                    case Joined(id):
-                    case State(s): state = s;
+                    case Joined(id): this.id = id;
+                    case State(state): this.state = state;
                 }
             }
         } else {
             world = new World();
-            player = world.createPlayer();
+            id = world.createPlayer().id;
         }
             
     } //ready
@@ -56,32 +57,44 @@ class Main extends luxe.Game {
     } //onkeyup
 
     override function update(delta:Float) {
-        var mid = Luxe.screen.mid;
-        if(touched) {
-            var cursor = Luxe.screen.cursor.pos;
-            player.dir = Math.atan2(cursor.y - mid.y, cursor.x - mid.x);
-            if(mp) try ws.send(Serializer.run(StartMove)) catch(e:Dynamic) {} else player.speed = 3;
-        } else {
-            if(mp) try ws.send(Serializer.run(StopMove)) catch(e:Dynamic) {} else player.speed = 0;
-        }
-        
         if(mp) {
-            if(state != null) {
-                player = state.objects.find(function(o) return o.id == id);
-                if(player == null) id = null;
-                draw(state.objects);
-            }
+            if(state == null || ws.readyState != 1) return; // not ready
         } else {
             state = world.update();
-            draw(state.objects);
         }
         
-        // Update camera
-        if(player != null) {
+        // handle move
+        var player = state.objects.find(function(o) return o.id == id);
+        if(player == null) {
+            id = null;
+        } else {
+            // move player
+            var mid = Luxe.screen.mid;
+            if(touched) {
+                var cursor = Luxe.screen.cursor.pos;
+                var dir = Math.atan2(cursor.y - mid.y, cursor.x - mid.x);
+                if(mp) {
+                    if(player.speed == 0) ws.send(Serializer.run(StartMove));
+                    ws.send(Serializer.run(SetDirection(dir)));
+                } else {
+                    player.speed = 3;
+                    player.dir = dir;
+                }
+            } else {
+                if(mp) {
+                    if(player.speed != 0) ws.send(Serializer.run(StopMove));
+                } else {
+                    player.speed = 0;
+                }
+            }
+            
+            // update camera
             var scale = player.size / 40;
             Actuate.tween(Luxe.camera.scale, 0.2, {x: scale, y: scale});
             Luxe.camera.pos.set_xy(player.x - mid.x, player.y - mid.y);
         }
+        
+        draw(state.objects);
     } //update
     
     var touched:Bool = false;

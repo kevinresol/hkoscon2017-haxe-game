@@ -22,6 +22,7 @@ class Server {
 				var command:Command = Unserializer.run(msg);
 				switch command {
 					case Join:
+						trace(command, client.player);
 						if(client.player == null)
 							client.player = world.createPlayer();
 							
