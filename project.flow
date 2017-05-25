@@ -22,7 +22,10 @@
         "haxe-ws" : "*"
       },
       defines : ["MULTIPLAYER"],
-      flags : ["-dce", "full"]
+      flags : [
+        "-dce", "full",
+        "--macro", "keep('phoenix.Vector')"
+      ]
     },
 
       //Copies over all the assets to the output
