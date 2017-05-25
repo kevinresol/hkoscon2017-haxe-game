@@ -1,5 +1,6 @@
 package game;
 
+@:keep
 enum ObjectType {
 	Player;
 	Ai;

@@ -21,7 +21,8 @@
         luxe : '*',
         "haxe-ws" : "*"
       },
-      defines : ["MULTIPLAYER"]
+      defines : ["MULTIPLAYER"],
+      flags : ["-dce", "full"]
     },
 
       //Copies over all the assets to the output
