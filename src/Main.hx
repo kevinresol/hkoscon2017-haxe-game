@@ -32,7 +32,7 @@ class Main extends luxe.Game {
 
     override function ready() {
         if(mp) {
-            ws = new js.html.WebSocket('ws://192.168.0.110:8888');
+            ws = new js.html.WebSocket('ws://127.0.0.1:8888');
             ws.onopen = function() ws.send(Serializer.run(Join));
             ws.onmessage = function(msg) {
                 var msg:Message = Unserializer.run(msg.data);
