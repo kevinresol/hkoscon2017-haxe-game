@@ -39,6 +39,10 @@ Get Haxe from http://haxe.org/download/.
 
 Although in theory you can use any [IDE or text editor](https://haxe.org/documentation/introduction/editors-and-ides.html), we recommend using [Visual Studio Code](https://code.visualstudio.com/) with the [Haxe Extension Pack](https://marketplace.visualstudio.com/items?itemName=vshaxe.haxe-extension-pack), which offers the best Haxe support at the moment.
 
+### Install C++ development tools
+
+Depending on your OS, [Visual Studio](https://www.visualstudio.com/) (Windows), [XCode](https://developer.apple.com/xcode/) (Mac), or gcc (Linux).
+
 ### Server
 
 ```bash
