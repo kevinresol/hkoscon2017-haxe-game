@@ -20,7 +20,8 @@
       dependencies : {
         luxe : '*',
         "haxe-ws" : "*"
-      }
+      },
+      defines : ["MULTIPLAYER"]
     },
 
       //Copies over all the assets to the output

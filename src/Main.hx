@@ -3,12 +3,15 @@ import luxe.GameConfig;
 import luxe.Input;
 import luxe.Color;
 import luxe.tween.Actuate;
-import haxe.*;
+import game.*;
+using Lambda;
+
+#if MULTIPLAYER
+import haxe.Serializer;
+import haxe.Unserializer;
 import mp.Command;
 import mp.Message;
-import game.*;
-
-using Lambda;
+#end
 
 class Main extends luxe.Game {
     
@@ -16,8 +19,9 @@ class Main extends luxe.Game {
     var state:GameState;
     var connected = false;
     var id:Null<Int>;
-    var mp:Bool = true;
+    #if MULTIPLAYER
     var ws:haxe.net.WebSocket;
+    #end
 
     override function config(config:GameConfig) {
 
@@ -32,7 +36,7 @@ class Main extends luxe.Game {
     } //config
 
     override function ready() {
-        if(mp) {
+        #if MULTIPLAYER
             ws = haxe.net.WebSocket.create("ws://127.0.0.1:8888", ['echo-protocol'], false);
             ws.onopen = function() ws.sendString(Serializer.run(Join));
             ws.onmessageString = function(msg) {
@@ -42,10 +46,10 @@ class Main extends luxe.Game {
                     case State(state): this.state = state;
                 }
             }
-        } else {
+        #else
             world = new World();
             id = world.createPlayer().id;
-        }
+        #end
             
     } //ready
 
@@ -58,12 +62,12 @@ class Main extends luxe.Game {
     } //onkeyup
 
     override function update(delta:Float) {
-        if(mp) {
+        #if MULTIPLAYER
             ws.process();
             if(state == null) return; // not ready
-        } else {
+        #else
             state = world.update();
-        }
+        #end
         
         // handle move
         var player = state.objects.find(function(o) return o.id == id);
@@ -75,19 +79,19 @@ class Main extends luxe.Game {
             if(touched) {
                 var cursor = Luxe.screen.cursor.pos;
                 var dir = Math.atan2(cursor.y - mid.y, cursor.x - mid.x);
-                if(mp) {
+                #if MULTIPLAYER
                     if(player.speed == 0) ws.sendString(Serializer.run(StartMove));
                     ws.sendString(Serializer.run(SetDirection(dir)));
-                } else {
+                #else
                     player.speed = 3;
                     player.dir = dir;
-                }
+                #end
             } else {
-                if(mp) {
+                #if MULTIPLAYER
                     if(player.speed != 0) ws.sendString(Serializer.run(StopMove));
-                } else {
+                #else
                     player.speed = 0;
-                }
+                #end
             }
             
             // update camera
