@@ -11,8 +11,8 @@
       //The package is important, it's used 
       //for save locations, initializing mobile project files etc
     app : {
-      name : 'luxe_empty',
-      package : 'com.luxeengine.empty'
+      name : 'HaxeAgar',
+      package : 'org.hkoscon'
     },
 
       //This configures the build process

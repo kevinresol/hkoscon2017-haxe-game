@@ -21,10 +21,11 @@ class Main extends luxe.Game {
 
     override function config(config:GameConfig) {
 
-        config.window.title = 'luxe game';
+        config.window.title = 'Haxe Agar';
         config.window.width = 960;
         config.window.height = 640;
         config.window.fullscreen = false;
+        config.render.antialiasing = 8;
 
         return config;
 
