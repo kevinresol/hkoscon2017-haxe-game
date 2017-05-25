@@ -1,6 +1,6 @@
 {
     "version": "2.0.0",
     "command": "haxelib",
-    "args": ["run","flow","run","web"],
+    "args": ["run","flow","build","web"],
     "problemMatcher": "$haxe"
 }
