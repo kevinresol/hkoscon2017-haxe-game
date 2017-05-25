@@ -81,4 +81,20 @@ Feel free to [open issues](https://github.com/kevinresol/hkoscon2017-haxe-game/i
 
 ## License
 
-...
+<p xmlns:dct="http://purl.org/dc/terms/" xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
+  <a rel="license"
+     href="http://creativecommons.org/publicdomain/zero/1.0/">
+    <img src="https://licensebuttons.net/p/zero/1.0/88x31.png" style="border-style: none;" alt="CC0" />
+  </a>
+  <br />
+  To the extent possible under law,
+  <a rel="dct:publisher"
+     href="https://github.com/kevinresol/hkoscon2017-haxe-game">
+    <span property="dct:title">Andy Li & Kevin Leung</span></a>
+  has waived all copyright and related or neighboring rights to
+  <span property="dct:title">"Build a cross-platform game in Haxe" workshop</span>.
+This work is published from:
+<span property="vcard:Country" datatype="dct:ISO3166"
+      content="HK" about="https://github.com/kevinresol/hkoscon2017-haxe-game">
+  Hong Kong</span>.
+</p>
