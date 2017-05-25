@@ -20,7 +20,13 @@ Get Haxe from http://haxe.org/download/.
    haxelib install snowfall
    haxelib run snowfall update luxe
    ```
- 
+
+ * [haxe-ws](https://github.com/soywiz/haxe-ws)
+
+   ```bash
+   haxelib install haxe-ws
+   ```
+
  * [hxnodejs](https://github.com/HaxeFoundation/hxnodejs)
 
    ```bash

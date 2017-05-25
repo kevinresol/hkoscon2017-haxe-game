@@ -15,9 +15,9 @@ class Main extends luxe.Game {
     var world:World;
     var state:GameState;
     var connected = false;
-    var id:Int;
+    var id:Null<Int>;
     var mp:Bool = true;
-    var ws:js.html.WebSocket; // TODO: cross platform
+    var ws:haxe.net.WebSocket;
 
     override function config(config:GameConfig) {
 
@@ -32,10 +32,10 @@ class Main extends luxe.Game {
 
     override function ready() {
         if(mp) {
-            ws = new js.html.WebSocket('ws://127.0.0.1:8888');
-            ws.onopen = function() ws.send(Serializer.run(Join));
-            ws.onmessage = function(msg) {
-                var msg:Message = Unserializer.run(msg.data);
+            ws = haxe.net.WebSocket.create("ws://127.0.0.1:8888", ['echo-protocol'], false);
+            ws.onopen = function() ws.sendString(Serializer.run(Join));
+            ws.onmessageString = function(msg) {
+                var msg:Message = Unserializer.run(msg);
                 switch msg {
                     case Joined(id): this.id = id;
                     case State(state): this.state = state;
@@ -58,7 +58,8 @@ class Main extends luxe.Game {
 
     override function update(delta:Float) {
         if(mp) {
-            if(state == null || ws.readyState != 1) return; // not ready
+            ws.process();
+            if(state == null) return; // not ready
         } else {
             state = world.update();
         }
@@ -74,15 +75,15 @@ class Main extends luxe.Game {
                 var cursor = Luxe.screen.cursor.pos;
                 var dir = Math.atan2(cursor.y - mid.y, cursor.x - mid.x);
                 if(mp) {
-                    if(player.speed == 0) ws.send(Serializer.run(StartMove));
-                    ws.send(Serializer.run(SetDirection(dir)));
+                    if(player.speed == 0) ws.sendString(Serializer.run(StartMove));
+                    ws.sendString(Serializer.run(SetDirection(dir)));
                 } else {
                     player.speed = 3;
                     player.dir = dir;
                 }
             } else {
                 if(mp) {
-                    if(player.speed != 0) ws.send(Serializer.run(StopMove));
+                    if(player.speed != 0) ws.sendString(Serializer.run(StopMove));
                 } else {
                     player.speed = 0;
                 }
