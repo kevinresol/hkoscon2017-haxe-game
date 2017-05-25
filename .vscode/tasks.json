@@ -19,6 +19,16 @@
             "command": "haxe",
             "args": ["server.hxml"],
             "isBuildCommand": true
+        },
+        {
+            "taskName": "generate client.hxml (web)",
+            "isShellCommand": true,
+            "command": "haxelib run flow info web --hxml > client.hxml"
+        },
+        {
+            "taskName": "generate client.hxml (desktop)",
+            "isShellCommand": true,
+            "command": "haxelib run flow info --hxml > client.hxml"
         }
     ]
 }
