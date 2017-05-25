@@ -27,12 +27,14 @@ Get Haxe from http://haxe.org/download/.
    haxelib install hxnodejs
    ```
 
+ * [Node.js](https://nodejs.org/), and optionally [yarn](https://yarnpkg.com/).
+
 ### Server
 
 ```bash
 haxe server.hxml
 cd bin/server
-yarn add ws
+npm install ws # or `yarn add ws`
 node server.js
 ```
 
