@@ -18,7 +18,7 @@ class Main extends luxe.Game {
     var world:World;
     var state:GameState;
     var connected = false;
-    var id:Null<Int>;
+    var id:Null<Int> = null;
     #if MULTIPLAYER
     var ws:haxe.net.WebSocket;
     #end
@@ -71,9 +71,7 @@ class Main extends luxe.Game {
         
         // handle move
         var player = state.objects.find(function(o) return o.id == id);
-        if(player == null) {
-            id = null;
-        } else {
+        if(player != null) {
             // move player
             var mid = Luxe.screen.mid;
             if(touched) {
