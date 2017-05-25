@@ -42,7 +42,7 @@ class Server {
 
 			cnx.on('close', function(_) {
 				if(client.player != null)
-					client.player.speed = 0; // simply stop moving
+					world.remove(client.player);
 				clients.remove(client);
 			});
 		});
