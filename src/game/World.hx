@@ -2,8 +2,13 @@ package game;
 
 
 class World {
+	// list of active game objects
 	public var objects:Array<Object> = [];
+	
+	// objects spawns within this rectangle
 	var size:{width:Int, height:Int};
+	
+	// counter for the object IDs
 	var count:Int = 0;
 
 	public function new() {
@@ -68,12 +73,18 @@ class World {
 	}
 
 	public function update():GameState {
+		
 		for(object in objects) if(object.speed != 0) {
+			
+			// randomize AI direction
 			if(object.type == Ai && Math.random() < 0.1) object.dir += Math.random() - 0.5;
+			
+			// update object positions by their speed and direction
 			object.x += Math.cos(object.dir) * object.speed;
 			object.y += Math.sin(object.dir) * object.speed;
 		}
-
+		
+		// detect collisions and make larger objects consume smaller objects
 		var removed = [];
 
 		for(object in objects) {
@@ -81,17 +92,27 @@ class World {
 				if(object.size > other.size) {
 					var dx = object.x - other.x;
 					var dy = object.y - other.y;
+					
+					// distance < radius
 					if(dx * dx + dy * dy < object.size * object.size) {
+						// we don't want to modify the array we are iterating
 						removed.push(other);
+						
+						// size increases after consuming the target
 						object.size += other.size * 0.1;
 					}
 				}
 			}
 		}
-
+		
 		for(object in removed) {
+			
+			// actually remove the objects
 			remove(object);
+			
+			// replenish food
 			if(object.type == Food) createFood();
+			
 		}
 
 		return {
@@ -100,30 +121,3 @@ class World {
 		}
 	}
 }
-
-
-
-
-/**
- *
- *  var player = new Visual({
- *  	pos: new Vector(100, 100),
- *  	scale: new Vector(1, 1),
- *  	geom: Luxe.draw.circle(),
- *  	depth: 1,
- *
- *  });
- *
- *  player.pos.x =
- *  player.scale.x =
- *  player.destroy();
- *
- *  function ontouchdown() {
- *
- *  }
- *
- *  function update(dt) {
- *  	state = world.update();
- *  	draw(state);
- *  }
- */

@@ -62,10 +62,9 @@ class Server {
 
 			// boardcast the game state
 			var msg = Serializer.run(State(state));
-			for(client in clients)
-				try {
-					client.connection.send(msg);
-				} catch (e:Dynamic) {}
+			for(client in clients) {
+				client.connection.send(msg);
+			}
 		}
 	}
 }

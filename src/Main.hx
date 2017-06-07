@@ -95,11 +95,20 @@ class Main extends luxe.Game {
 
 			// update camera
 			var scale = player.size / 40;
-			Actuate.tween(Luxe.camera.scale, 0.2, {x: scale, y: scale});
+			Actuate.tween(Luxe.camera.scale, 1.0, {x: scale, y: scale});
 			Luxe.camera.pos.set_xy(player.x - mid.x, player.y - mid.y);
 		}
 
-		draw(state.objects);
+		for(object in state.objects) {
+			Luxe.draw.circle({
+				x: object.x,
+				y: object.y,
+				r: object.size,
+				color: new Color().rgb(object.color),
+				immediate: true, // see luxe.Visual & luxe.Sprite for persistent display objects
+				depth: object.depth,
+			});
+		}
 	} //update
 
 	var touched:Bool = false;
@@ -110,25 +119,13 @@ class Main extends luxe.Game {
 	override function onmouseup(e) {
 		touched = false;
 	}
+	
 	override function ontouchdown(e) {
 		touched = true;
 	}
 
 	override function ontouchup(e) {
 		touched = false;
-	}
-
-	function draw(objects:Array<Object>) {
-		for(object in objects) {
-			Luxe.draw.circle({
-				x: object.x,
-				y: object.y,
-				r: object.size,
-				color: new Color().rgb(object.color),
-				immediate: true, // should use a sprite/visual
-				depth: object.depth,
-			});
-		}
 	}
 
 } //Main

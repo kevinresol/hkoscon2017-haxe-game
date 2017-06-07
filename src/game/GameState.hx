@@ -1,6 +1,6 @@
 package game;
 
 typedef GameState = {
-	objects: Array<Object>,
-	removed: Array<Object>,
+	objects:Array<Object>,
+	removed:Array<Object>,
 }
