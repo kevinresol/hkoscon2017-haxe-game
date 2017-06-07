@@ -21,7 +21,7 @@ class World {
 		return object;
 	}
 
-	public function remove(object:Object) {
+	public inline function remove(object:Object) {
 		objects.remove(object);
 	}
 

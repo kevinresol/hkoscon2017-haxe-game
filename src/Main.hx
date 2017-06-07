@@ -25,6 +25,7 @@ class Main extends luxe.Game {
 
 	override function config(config:GameConfig) {
 
+		// https://luxeengine.com/guide/#gettingstarted
 		config.window.title = 'Haxe Agar';
 		config.window.width = 960;
 		config.window.height = 640;
@@ -37,7 +38,7 @@ class Main extends luxe.Game {
 
 	override function ready() {
 		#if MULTIPLAYER
-			ws = haxe.net.WebSocket.create("ws://127.0.0.1:8888", ['echo-protocol'], false);
+			ws = haxe.net.WebSocket.create("ws://169.254.235.246:8888");
 			ws.onopen = function() ws.sendString(Serializer.run(Join));
 			ws.onmessageString = function(msg) {
 				var msg:Message = Unserializer.run(msg);
