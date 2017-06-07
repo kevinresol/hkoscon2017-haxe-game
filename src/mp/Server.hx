@@ -48,7 +48,7 @@ class Server {
 		});
 
 		// game loop
-		var timer = new haxe.Timer(16);
+		var timer = new haxe.Timer(32);
 		timer.run = function() {
 			var state = world.update();
 
@@ -63,7 +63,9 @@ class Server {
 			// boardcast the game state
 			var msg = Serializer.run(State(state));
 			for(client in clients)
-				client.connection.send(msg);
+				try {
+					client.connection.send(msg);
+				} catch (e:Dynamic) {}
 		}
 	}
 }
