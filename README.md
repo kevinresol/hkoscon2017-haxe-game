@@ -1,5 +1,7 @@
 # HKOSCon2017 Haxe Game Workshop
 
+[![Join the chat at https://gitter.im/hkoscon2017-haxe-game/Lobby](https://badges.gitter.im/hkoscon2017-haxe-game/Lobby.svg)](https://gitter.im/hkoscon2017-haxe-game/Lobby?utm_source=badge&utm_medium=badge&utm_content=badge)
+
 Workshop info: [Build a cross-platform game in Haxe](https://hkoscon.org/2017/topics/build-a-cross-platform-game-in-haxe/)
 
 This is an [agar.io](https://agar.io/) clone to demonstrate the capability of Haxe in building cross platform games,
