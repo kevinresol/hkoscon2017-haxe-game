@@ -38,7 +38,7 @@ class Main extends luxe.Game {
 
 	override function ready() {
 		#if MULTIPLAYER
-			ws = haxe.net.WebSocket.create("ws://169.254.235.246:8888");
+			ws = haxe.net.WebSocket.create("ws://127.0.0.1:8888");
 			ws.onopen = function() ws.sendString(Serializer.run(Join));
 			ws.onmessageString = function(msg) {
 				var msg:Message = Unserializer.run(msg);
