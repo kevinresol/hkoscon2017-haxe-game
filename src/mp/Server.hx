@@ -10,6 +10,8 @@ using Lambda;
 
 class Server {
 	static function main() {
+		Sys.println("built at " + BuildInfo.getBuildDate());
+
 		// websocket server
 		var clients:Array<Client> = [];
 		var world = new World();
