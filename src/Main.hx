@@ -2,6 +2,7 @@
 import luxe.GameConfig;
 import luxe.Input;
 import luxe.Color;
+import luxe.Vector;
 import luxe.tween.Actuate;
 import game.*;
 using Lambda;
@@ -78,7 +79,6 @@ class Main extends luxe.Game {
 			// move player
 			var mid = Luxe.screen.mid;
 			if(touched) {
-				var cursor = Luxe.screen.cursor.pos;
 				var dir = Math.atan2(cursor.y - mid.y, cursor.x - mid.x);
 				#if MULTIPLAYER
 					if(player.speed == 0) ws.sendString(Serializer.run(StartMove));
@@ -114,8 +114,14 @@ class Main extends luxe.Game {
 	} //update
 
 	var touched:Bool = false;
+	var cursor = new Vector();
 	override function onmousedown(e) {
 		touched = true;
+		cursor.set_xy(e.x, e.y);
+	}
+	
+	override function onmousemove(e) {
+		cursor.set_xy(e.x, e.y);
 	}
 
 	override function onmouseup(e) {
@@ -124,6 +130,11 @@ class Main extends luxe.Game {
 	
 	override function ontouchdown(e) {
 		touched = true;
+		cursor.set_xy(e.x, e.y);
+	}
+	
+	override function ontouchmove(e:TouchEvent) {
+		cursor.set_xy(e.x * Luxe.screen.size.x, e.y * Luxe.screen.size.y);
 	}
 
 	override function ontouchup(e) {
