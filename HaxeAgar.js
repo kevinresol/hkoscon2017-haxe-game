@@ -11,7 +11,7 @@ var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
 };
 $hxClasses["EReg"] = EReg;
-EReg.__name__ = ["EReg"];
+EReg.__name__ = true;
 EReg.prototype = {
 	match: function(s) {
 		if(this.r.global) {
@@ -25,30 +25,7 @@ EReg.prototype = {
 };
 var HxOverrides = function() { };
 $hxClasses["HxOverrides"] = HxOverrides;
-HxOverrides.__name__ = ["HxOverrides"];
-HxOverrides.strDate = function(s) {
-	var _g = s.length;
-	switch(_g) {
-	case 8:
-		var k = s.split(":");
-		var d = new Date();
-		d["setTime"](0);
-		d["setUTCHours"](k[0]);
-		d["setUTCMinutes"](k[1]);
-		d["setUTCSeconds"](k[2]);
-		return d;
-	case 10:
-		var k1 = s.split("-");
-		return new Date(k1[0],k1[1] - 1,k1[2],0,0,0);
-	case 19:
-		var k2 = s.split(" ");
-		var y = k2[0].split("-");
-		var t = k2[1].split(":");
-		return new Date(y[0],y[1] - 1,y[2],t[0],t[1],t[2]);
-	default:
-		throw new js__$Boot_HaxeError("Invalid date format : " + s);
-	}
-};
+HxOverrides.__name__ = true;
 HxOverrides.cca = function(s,index) {
 	var x = s.charCodeAt(index);
 	if(x != x) {
@@ -85,7 +62,7 @@ HxOverrides.iter = function(a) {
 };
 var Lambda = function() { };
 $hxClasses["Lambda"] = Lambda;
-Lambda.__name__ = ["Lambda"];
+Lambda.__name__ = true;
 Lambda.has = function(it,elt) {
 	var x = $iterator(it)();
 	while(x.hasNext()) {
@@ -129,19 +106,9 @@ var List = function() {
 	this.length = 0;
 };
 $hxClasses["List"] = List;
-List.__name__ = ["List"];
+List.__name__ = true;
 List.prototype = {
-	add: function(item) {
-		var x = new _$List_ListNode(item,null);
-		if(this.h == null) {
-			this.h = x;
-		} else {
-			this.q.next = x;
-		}
-		this.q = x;
-		this.length++;
-	}
-	,push: function(item) {
+	push: function(item) {
 		var x = new _$List_ListNode(item,this.h);
 		this.h = x;
 		if(this.q == null) {
@@ -192,7 +159,7 @@ var _$List_ListNode = function(item,next) {
 	this.next = next;
 };
 $hxClasses["_List.ListNode"] = _$List_ListNode;
-_$List_ListNode.__name__ = ["_List","ListNode"];
+_$List_ListNode.__name__ = true;
 _$List_ListNode.prototype = {
 	__class__: _$List_ListNode
 };
@@ -200,7 +167,7 @@ var _$List_ListIterator = function(head) {
 	this.head = head;
 };
 $hxClasses["_List.ListIterator"] = _$List_ListIterator;
-_$List_ListIterator.__name__ = ["_List","ListIterator"];
+_$List_ListIterator.__name__ = true;
 _$List_ListIterator.prototype = {
 	hasNext: function() {
 		return this.head != null;
@@ -214,7 +181,7 @@ _$List_ListIterator.prototype = {
 };
 var Luxe = function() { };
 $hxClasses["Luxe"] = Luxe;
-Luxe.__name__ = ["Luxe"];
+Luxe.__name__ = true;
 Luxe.__properties__ = {set_fixed_frame_time:"set_fixed_frame_time",get_fixed_frame_time:"get_fixed_frame_time",get_fixed_alpha:"get_fixed_alpha",set_fixed_timestep:"set_fixed_timestep",get_fixed_timestep:"get_fixed_timestep",set_fixed_delta:"set_fixed_delta",get_fixed_delta:"get_fixed_delta",get_sim_delta:"get_sim_delta",get_sim_time:"get_sim_time",set_timescale:"set_timescale",get_timescale:"get_timescale",get_tick_delta:"get_tick_delta",get_tick_start_prev:"get_tick_start_prev",get_tick_start:"get_tick_start",set_update_rate:"set_update_rate",get_update_rate:"get_update_rate",set_frame_max_delta:"set_frame_max_delta",get_frame_max_delta:"get_frame_max_delta",get_frame_start_prev:"get_frame_start_prev",get_frame_start:"get_frame_start",get_dt:"get_dt",get_build:"get_build",get_version:"get_version",get_screen:"get_screen",get_time:"get_time",get_snow:"get_snow"};
 Luxe.on = function(event,handler) {
 	Luxe.core.emitter.on(event,handler);
@@ -317,7 +284,7 @@ var luxe_Game = function() {
 	this.app.run();
 };
 $hxClasses["luxe.Game"] = luxe_Game;
-luxe_Game.__name__ = ["luxe","Game"];
+luxe_Game.__name__ = true;
 luxe_Game.main = function() {
 	new Main();
 };
@@ -391,7 +358,7 @@ var Main = function() {
 	luxe_Game.call(this);
 };
 $hxClasses["Main"] = Main;
-Main.__name__ = ["Main"];
+Main.__name__ = true;
 Main.__super__ = luxe_Game;
 Main.prototype = $extend(luxe_Game.prototype,{
 	config: function(config) {
@@ -403,25 +370,9 @@ Main.prototype = $extend(luxe_Game.prototype,{
 		return config;
 	}
 	,ready: function() {
-		var _gthis = this;
-		haxe_Log.trace("built at " + "2017-06-09 20:48:29",{ fileName : "Main.hx", lineNumber : 41, className : "Main", methodName : "ready"});
-		this.ws = haxe_net_WebSocket.create("ws://127.0.0.1:8888");
-		this.ws.onopen = function() {
-			_gthis.ws.sendString(haxe_Serializer.run(mp_Command.Join));
-		};
-		this.ws.onmessageString = function(msg) {
-			var msg1 = haxe_Unserializer.run(msg);
-			switch(msg1[1]) {
-			case 0:
-				var id = msg1[2];
-				_gthis.id = id;
-				break;
-			case 1:
-				var state = msg1[2];
-				_gthis.state = state;
-				break;
-			}
-		};
+		haxe_Log.trace("built at " + "2017-06-09 20:50:40",{ fileName : "Main.hx", lineNumber : 41, className : "Main", methodName : "ready"});
+		this.world = new game_World();
+		this.id = this.world.createPlayer().id;
 	}
 	,onkeyup: function(event) {
 		if(event.keycode == 27) {
@@ -430,10 +381,7 @@ Main.prototype = $extend(luxe_Game.prototype,{
 	}
 	,update: function(delta) {
 		var _gthis = this;
-		this.ws.process();
-		if(this.state == null) {
-			return;
-		}
+		this.state = this.world.update();
 		var player = Lambda.find(this.state.objects,function(o) {
 			return o.id == _gthis.id;
 		});
@@ -441,12 +389,10 @@ Main.prototype = $extend(luxe_Game.prototype,{
 			var mid = Luxe.core.screen.get_mid();
 			if(this.touched) {
 				var dir = Math.atan2(this.cursor.y - mid.y,this.cursor.x - mid.x);
-				if(player.speed == 0) {
-					this.ws.sendString(haxe_Serializer.run(mp_Command.StartMove));
-				}
-				this.ws.sendString(haxe_Serializer.run(mp_Command.SetDirection(dir)));
-			} else if(player.speed != 0) {
-				this.ws.sendString(haxe_Serializer.run(mp_Command.StopMove));
+				player.speed = 3;
+				player.dir = dir;
+			} else {
+				player.speed = 0;
 			}
 			var scale = player.size / 40;
 			luxe_tween_Actuate.tween(Luxe.camera.get_scale(),1.0,{ x : scale, y : scale});
@@ -597,10 +543,10 @@ Main.prototype = $extend(luxe_Game.prototype,{
 	}
 	,__class__: Main
 });
-Math.__name__ = ["Math"];
+Math.__name__ = true;
 var Reflect = function() { };
 $hxClasses["Reflect"] = Reflect;
-Reflect.__name__ = ["Reflect"];
+Reflect.__name__ = true;
 Reflect.field = function(o,field) {
 	try {
 		return o[field];
@@ -654,23 +600,9 @@ Reflect.fields = function(o) {
 	}
 	return a;
 };
-Reflect.isFunction = function(f) {
-	if(typeof(f) == "function") {
-		return !(f.__name__ || f.__ename__);
-	} else {
-		return false;
-	}
-};
-Reflect.deleteField = function(o,field) {
-	if(!Object.prototype.hasOwnProperty.call(o,field)) {
-		return false;
-	}
-	delete(o[field]);
-	return true;
-};
 var Std = function() { };
 $hxClasses["Std"] = Std;
-Std.__name__ = ["Std"];
+Std.__name__ = true;
 Std.string = function(s) {
 	return js_Boot.__string_rec(s,"");
 };
@@ -691,17 +623,9 @@ Std.random = function(x) {
 		return Math.floor(Math.random() * x);
 	}
 };
-var StringBuf = function() {
-	this.b = "";
-};
-$hxClasses["StringBuf"] = StringBuf;
-StringBuf.__name__ = ["StringBuf"];
-StringBuf.prototype = {
-	__class__: StringBuf
-};
 var StringTools = function() { };
 $hxClasses["StringTools"] = StringTools;
-StringTools.__name__ = ["StringTools"];
+StringTools.__name__ = true;
 StringTools.isSpace = function(s,pos) {
 	var c = HxOverrides.cca(s,pos);
 	if(!(c > 8 && c < 14)) {
@@ -743,57 +667,15 @@ StringTools.rpad = function(s,c,l) {
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
 };
-var ValueType = $hxClasses["ValueType"] = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] };
-ValueType.TNull = ["TNull",0];
-ValueType.TNull.toString = $estr;
-ValueType.TNull.__enum__ = ValueType;
-ValueType.TInt = ["TInt",1];
-ValueType.TInt.toString = $estr;
-ValueType.TInt.__enum__ = ValueType;
-ValueType.TFloat = ["TFloat",2];
-ValueType.TFloat.toString = $estr;
-ValueType.TFloat.__enum__ = ValueType;
-ValueType.TBool = ["TBool",3];
-ValueType.TBool.toString = $estr;
-ValueType.TBool.__enum__ = ValueType;
-ValueType.TObject = ["TObject",4];
-ValueType.TObject.toString = $estr;
-ValueType.TObject.__enum__ = ValueType;
-ValueType.TFunction = ["TFunction",5];
-ValueType.TFunction.toString = $estr;
-ValueType.TFunction.__enum__ = ValueType;
-ValueType.TClass = function(c) { var $x = ["TClass",6,c]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; };
-ValueType.TEnum = function(e) { var $x = ["TEnum",7,e]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; };
-ValueType.TUnknown = ["TUnknown",8];
-ValueType.TUnknown.toString = $estr;
-ValueType.TUnknown.__enum__ = ValueType;
 var Type = function() { };
 $hxClasses["Type"] = Type;
-Type.__name__ = ["Type"];
-Type.getClassName = function(c) {
-	var a = c.__name__;
-	if(a == null) {
-		return null;
-	}
-	return a.join(".");
-};
-Type.getEnumName = function(e) {
-	var a = e.__ename__;
-	return a.join(".");
-};
+Type.__name__ = true;
 Type.resolveClass = function(name) {
 	var cl = $hxClasses[name];
 	if(cl == null || !cl.__name__) {
 		return null;
 	}
 	return cl;
-};
-Type.resolveEnum = function(name) {
-	var e = $hxClasses[name];
-	if(e == null || !e.__ename__) {
-		return null;
-	}
-	return e;
 };
 Type.createInstance = function(cl,args) {
 	var _g = args.length;
@@ -832,63 +714,7 @@ Type.createInstance = function(cl,args) {
 		throw new js__$Boot_HaxeError("Too many arguments");
 	}
 };
-Type.createEmptyInstance = function(cl) {
-	function empty() {}; empty.prototype = cl.prototype;
-	return new empty();
-};
-Type.createEnum = function(e,constr,params) {
-	var f = Reflect.field(e,constr);
-	if(f == null) {
-		throw new js__$Boot_HaxeError("No such constructor " + constr);
-	}
-	if(Reflect.isFunction(f)) {
-		if(params == null) {
-			throw new js__$Boot_HaxeError("Constructor " + constr + " need parameters");
-		}
-		return f.apply(e,params);
-	}
-	if(params != null && params.length != 0) {
-		throw new js__$Boot_HaxeError("Constructor " + constr + " does not need parameters");
-	}
-	return f;
-};
-Type["typeof"] = function(v) {
-	var _g = typeof(v);
-	switch(_g) {
-	case "boolean":
-		return ValueType.TBool;
-	case "function":
-		if(v.__name__ || v.__ename__) {
-			return ValueType.TObject;
-		}
-		return ValueType.TFunction;
-	case "number":
-		if(Math.ceil(v) == v % 2147483648.0) {
-			return ValueType.TInt;
-		}
-		return ValueType.TFloat;
-	case "object":
-		if(v == null) {
-			return ValueType.TNull;
-		}
-		var e = v.__enum__;
-		if(e != null) {
-			return ValueType.TEnum(e);
-		}
-		var c = js_Boot.getClass(v);
-		if(c != null) {
-			return ValueType.TClass(c);
-		}
-		return ValueType.TObject;
-	case "string":
-		return ValueType.TClass(String);
-	case "undefined":
-		return ValueType.TNull;
-	default:
-		return ValueType.TUnknown;
-	}
-};
-var game_ObjectType = $hxClasses["game.ObjectType"] = { __ename__ : ["game","ObjectType"], __constructs__ : ["Player","Ai","Food"] };
+var game_ObjectType = { __ename__ : true, __constructs__ : ["Player","Ai","Food"] };
 game_ObjectType.Player = ["Player",0];
 game_ObjectType.Player.toString = $estr;
 game_ObjectType.Player.__enum__ = game_ObjectType;
@@ -898,24 +724,100 @@ game_ObjectType.Ai.__enum__ = game_ObjectType;
 game_ObjectType.Food = ["Food",2];
 game_ObjectType.Food.toString = $estr;
 game_ObjectType.Food.__enum__ = game_ObjectType;
-var game_World = function() { };
+var game_World = function() {
+	this.count = 0;
+	this.objects = [];
+	this.size = { width : 2000, height : 2000};
+	var _g = 0;
+	while(_g < 10) {
+		var i = _g++;
+		this.createAi();
+	}
+	var _g1 = 0;
+	while(_g1 < 50) {
+		var i1 = _g1++;
+		this.createFood();
+	}
+};
 $hxClasses["game.World"] = game_World;
-game_World.__name__ = ["game","World"];
+game_World.__name__ = true;
+game_World.prototype = {
+	insert: function(object) {
+		this.objects.push(object);
+		return object;
+	}
+	,createPlayer: function() {
+		return this.insert({ id : this.count++, type : game_ObjectType.Player, color : 268435455, size : 40, dir : Math.random() * Math.PI * 2, speed : 3, x : Std.random(this.size.width), y : Std.random(this.size.height), depth : 3});
+	}
+	,createAi: function() {
+		return this.insert({ id : this.count++, type : game_ObjectType.Ai, color : Std.random(16777216), size : 40, dir : Math.random() * Math.PI * 2, speed : 1, x : Std.random(this.size.width), y : Std.random(this.size.height), depth : 2});
+	}
+	,createFood: function() {
+		return this.insert({ id : this.count++, type : game_ObjectType.Food, color : Std.random(16777216), size : 10, dir : Math.random() * Math.PI * 2, speed : 0, x : Std.random(this.size.width), y : Std.random(this.size.height), depth : 1});
+	}
+	,update: function() {
+		var _g = 0;
+		var _g1 = this.objects;
+		while(_g < _g1.length) {
+			var object = _g1[_g];
+			++_g;
+			if(object.speed != 0) {
+				if(object.type == game_ObjectType.Ai && Math.random() < 0.1) {
+					object.dir += Math.random() - 0.5;
+				}
+				object.x += Math.cos(object.dir) * object.speed;
+				object.y += Math.sin(object.dir) * object.speed;
+			}
+		}
+		var removed = [];
+		var _g2 = 0;
+		var _g11 = this.objects;
+		while(_g2 < _g11.length) {
+			var object1 = _g11[_g2];
+			++_g2;
+			var _g21 = 0;
+			var _g3 = this.objects;
+			while(_g21 < _g3.length) {
+				var other = _g3[_g21];
+				++_g21;
+				if(object1.size > other.size) {
+					var dx = object1.x - other.x;
+					var dy = object1.y - other.y;
+					if(dx * dx + dy * dy < object1.size * object1.size) {
+						removed.push(other);
+						object1.size += other.size * 0.1;
+					}
+				}
+			}
+		}
+		var _g4 = 0;
+		while(_g4 < removed.length) {
+			var object2 = removed[_g4];
+			++_g4;
+			HxOverrides.remove(this.objects,object2);
+			if(object2.type == game_ObjectType.Food) {
+				this.createFood();
+			}
+		}
+		return { objects : this.objects, removed : removed};
+	}
+	,__class__: game_World
+};
 var haxe_IMap = function() { };
 $hxClasses["haxe.IMap"] = haxe_IMap;
-haxe_IMap.__name__ = ["haxe","IMap"];
+haxe_IMap.__name__ = true;
 haxe_IMap.prototype = {
 	__class__: haxe_IMap
 };
 var haxe_Log = function() { };
 $hxClasses["haxe.Log"] = haxe_Log;
-haxe_Log.__name__ = ["haxe","Log"];
+haxe_Log.__name__ = true;
 haxe_Log.trace = function(v,infos) {
 	js_Boot.__trace(v,infos);
 };
 var haxe_Resource = function() { };
 $hxClasses["haxe.Resource"] = haxe_Resource;
-haxe_Resource.__name__ = ["haxe","Resource"];
+haxe_Resource.__name__ = true;
 haxe_Resource.getString = function(name) {
 	var _g = 0;
 	var _g1 = haxe_Resource.content;
@@ -947,667 +849,9 @@ haxe_Resource.getBytes = function(name) {
 	}
 	return null;
 };
-var haxe_Serializer = function() {
-	this.buf = new StringBuf();
-	this.cache = [];
-	this.useCache = haxe_Serializer.USE_CACHE;
-	this.useEnumIndex = haxe_Serializer.USE_ENUM_INDEX;
-	this.shash = new haxe_ds_StringMap();
-	this.scount = 0;
-};
-$hxClasses["haxe.Serializer"] = haxe_Serializer;
-haxe_Serializer.__name__ = ["haxe","Serializer"];
-haxe_Serializer.run = function(v) {
-	var s = new haxe_Serializer();
-	s.serialize(v);
-	return s.toString();
-};
-haxe_Serializer.prototype = {
-	toString: function() {
-		return this.buf.b;
-	}
-	,serializeString: function(s) {
-		var _this = this.shash;
-		var x = __map_reserved[s] != null ? _this.getReserved(s) : _this.h[s];
-		if(x != null) {
-			this.buf.b += "R";
-			this.buf.b += x == null ? "null" : "" + x;
-			return;
-		}
-		var _this1 = this.shash;
-		var value = this.scount++;
-		if(__map_reserved[s] != null) {
-			_this1.setReserved(s,value);
-		} else {
-			_this1.h[s] = value;
-		}
-		this.buf.b += "y";
-		s = encodeURIComponent(s);
-		this.buf.b += Std.string(s.length);
-		this.buf.b += ":";
-		this.buf.b += s == null ? "null" : "" + s;
-	}
-	,serializeRef: function(v) {
-		var vt = typeof(v);
-		var _g1 = 0;
-		var _g = this.cache.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var ci = this.cache[i];
-			if(typeof(ci) == vt && ci == v) {
-				this.buf.b += "r";
-				this.buf.b += i == null ? "null" : "" + i;
-				return true;
-			}
-		}
-		this.cache.push(v);
-		return false;
-	}
-	,serializeFields: function(v) {
-		var _g = 0;
-		var _g1 = Reflect.fields(v);
-		while(_g < _g1.length) {
-			var f = _g1[_g];
-			++_g;
-			this.serializeString(f);
-			this.serialize(Reflect.field(v,f));
-		}
-		this.buf.b += "g";
-	}
-	,serialize: function(v) {
-		var _g = Type["typeof"](v);
-		switch(_g[1]) {
-		case 0:
-			this.buf.b += "n";
-			break;
-		case 1:
-			var v1 = v;
-			if(v1 == 0) {
-				this.buf.b += "z";
-				return;
-			}
-			this.buf.b += "i";
-			this.buf.b += v1 == null ? "null" : "" + v1;
-			break;
-		case 2:
-			var v2 = v;
-			if(isNaN(v2)) {
-				this.buf.b += "k";
-			} else if(!isFinite(v2)) {
-				this.buf.b += v2 < 0 ? "m" : "p";
-			} else {
-				this.buf.b += "d";
-				this.buf.b += v2 == null ? "null" : "" + v2;
-			}
-			break;
-		case 3:
-			this.buf.b += v ? "t" : "f";
-			break;
-		case 4:
-			if(js_Boot.__instanceof(v,Class)) {
-				var className = Type.getClassName(v);
-				this.buf.b += "A";
-				this.serializeString(className);
-			} else if(js_Boot.__instanceof(v,Enum)) {
-				this.buf.b += "B";
-				this.serializeString(Type.getEnumName(v));
-			} else {
-				if(this.useCache && this.serializeRef(v)) {
-					return;
-				}
-				this.buf.b += "o";
-				this.serializeFields(v);
-			}
-			break;
-		case 5:
-			throw new js__$Boot_HaxeError("Cannot serialize function");
-			break;
-		case 6:
-			var c = _g[2];
-			if(c == String) {
-				this.serializeString(v);
-				return;
-			}
-			if(this.useCache && this.serializeRef(v)) {
-				return;
-			}
-			switch(c) {
-			case Array:
-				var ucount = 0;
-				this.buf.b += "a";
-				var l = v["length"];
-				var _g1 = 0;
-				var _g2 = l;
-				while(_g1 < _g2) {
-					var i = _g1++;
-					if(v[i] == null) {
-						++ucount;
-					} else {
-						if(ucount > 0) {
-							if(ucount == 1) {
-								this.buf.b += "n";
-							} else {
-								this.buf.b += "u";
-								this.buf.b += ucount == null ? "null" : "" + ucount;
-							}
-							ucount = 0;
-						}
-						this.serialize(v[i]);
-					}
-				}
-				if(ucount > 0) {
-					if(ucount == 1) {
-						this.buf.b += "n";
-					} else {
-						this.buf.b += "u";
-						this.buf.b += ucount == null ? "null" : "" + ucount;
-					}
-				}
-				this.buf.b += "h";
-				break;
-			case Date:
-				var d = v;
-				this.buf.b += "v";
-				this.buf.b += Std.string(d.getTime());
-				break;
-			case List:
-				this.buf.b += "l";
-				var v3 = v;
-				var _g_head = v3.h;
-				while(_g_head != null) {
-					var val = _g_head.item;
-					_g_head = _g_head.next;
-					var i1 = val;
-					this.serialize(i1);
-				}
-				this.buf.b += "h";
-				break;
-			case haxe_ds_IntMap:
-				this.buf.b += "q";
-				var v4 = v;
-				var k = v4.keys();
-				while(k.hasNext()) {
-					var k1 = k.next();
-					this.buf.b += ":";
-					this.buf.b += k1 == null ? "null" : "" + k1;
-					this.serialize(v4.h[k1]);
-				}
-				this.buf.b += "h";
-				break;
-			case haxe_ds_ObjectMap:
-				this.buf.b += "M";
-				var v5 = v;
-				var k2 = v5.keys();
-				while(k2.hasNext()) {
-					var k3 = k2.next();
-					var id = Reflect.field(k3,"__id__");
-					Reflect.deleteField(k3,"__id__");
-					this.serialize(k3);
-					k3["__id__"] = id;
-					this.serialize(v5.h[k3.__id__]);
-				}
-				this.buf.b += "h";
-				break;
-			case haxe_ds_StringMap:
-				this.buf.b += "b";
-				var v6 = v;
-				var k4 = v6.keys();
-				while(k4.hasNext()) {
-					var k5 = k4.next();
-					this.serializeString(k5);
-					this.serialize(__map_reserved[k5] != null ? v6.getReserved(k5) : v6.h[k5]);
-				}
-				this.buf.b += "h";
-				break;
-			case haxe_io_Bytes:
-				var v7 = v;
-				this.buf.b += "s";
-				this.buf.b += Std.string(Math.ceil(v7.length * 8 / 6));
-				this.buf.b += ":";
-				var i2 = 0;
-				var max = v7.length - 2;
-				var b64 = haxe_Serializer.BASE64_CODES;
-				if(b64 == null) {
-					var length = haxe_Serializer.BASE64.length;
-					var this1 = new Array(length);
-					b64 = this1;
-					var _g11 = 0;
-					var _g3 = haxe_Serializer.BASE64.length;
-					while(_g11 < _g3) {
-						var i3 = _g11++;
-						b64[i3] = HxOverrides.cca(haxe_Serializer.BASE64,i3);
-					}
-					haxe_Serializer.BASE64_CODES = b64;
-				}
-				while(i2 < max) {
-					var b1 = v7.b[i2++];
-					var b2 = v7.b[i2++];
-					var b3 = v7.b[i2++];
-					this.buf.b += String.fromCharCode(b64[b1 >> 2]);
-					this.buf.b += String.fromCharCode(b64[(b1 << 4 | b2 >> 4) & 63]);
-					this.buf.b += String.fromCharCode(b64[(b2 << 2 | b3 >> 6) & 63]);
-					this.buf.b += String.fromCharCode(b64[b3 & 63]);
-				}
-				if(i2 == max) {
-					var b11 = v7.b[i2++];
-					var b21 = v7.b[i2++];
-					this.buf.b += String.fromCharCode(b64[b11 >> 2]);
-					this.buf.b += String.fromCharCode(b64[(b11 << 4 | b21 >> 4) & 63]);
-					this.buf.b += String.fromCharCode(b64[b21 << 2 & 63]);
-				} else if(i2 == max + 1) {
-					var b12 = v7.b[i2++];
-					this.buf.b += String.fromCharCode(b64[b12 >> 2]);
-					this.buf.b += String.fromCharCode(b64[b12 << 4 & 63]);
-				}
-				break;
-			default:
-				if(this.useCache) {
-					this.cache.pop();
-				}
-				if(v.hxSerialize != null) {
-					this.buf.b += "C";
-					this.serializeString(Type.getClassName(c));
-					if(this.useCache) {
-						this.cache.push(v);
-					}
-					v.hxSerialize(this);
-					this.buf.b += "g";
-				} else {
-					this.buf.b += "c";
-					this.serializeString(Type.getClassName(c));
-					if(this.useCache) {
-						this.cache.push(v);
-					}
-					this.serializeFields(v);
-				}
-			}
-			break;
-		case 7:
-			var e = _g[2];
-			if(this.useCache) {
-				if(this.serializeRef(v)) {
-					return;
-				}
-				this.cache.pop();
-			}
-			this.buf.b += Std.string(this.useEnumIndex ? "j" : "w");
-			this.serializeString(Type.getEnumName(e));
-			if(this.useEnumIndex) {
-				this.buf.b += ":";
-				this.buf.b += Std.string(v[1]);
-			} else {
-				this.serializeString(v[0]);
-			}
-			this.buf.b += ":";
-			var l1 = v["length"];
-			this.buf.b += Std.string(l1 - 2);
-			var _g12 = 2;
-			var _g4 = l1;
-			while(_g12 < _g4) {
-				var i4 = _g12++;
-				this.serialize(v[i4]);
-			}
-			if(this.useCache) {
-				this.cache.push(v);
-			}
-			break;
-		default:
-			throw new js__$Boot_HaxeError("Cannot serialize " + Std.string(v));
-		}
-	}
-	,__class__: haxe_Serializer
-};
 var haxe_Timer = function() { };
 $hxClasses["haxe.Timer"] = haxe_Timer;
-haxe_Timer.__name__ = ["haxe","Timer"];
-var haxe__$Unserializer_DefaultResolver = function() {
-};
-$hxClasses["haxe._Unserializer.DefaultResolver"] = haxe__$Unserializer_DefaultResolver;
-haxe__$Unserializer_DefaultResolver.__name__ = ["haxe","_Unserializer","DefaultResolver"];
-haxe__$Unserializer_DefaultResolver.prototype = {
-	resolveClass: function(name) {
-		return Type.resolveClass(name);
-	}
-	,resolveEnum: function(name) {
-		return Type.resolveEnum(name);
-	}
-	,__class__: haxe__$Unserializer_DefaultResolver
-};
-var haxe_Unserializer = function(buf) {
-	this.buf = buf;
-	this.length = buf.length;
-	this.pos = 0;
-	this.scache = [];
-	this.cache = [];
-	var r = haxe_Unserializer.DEFAULT_RESOLVER;
-	if(r == null) {
-		r = new haxe__$Unserializer_DefaultResolver();
-		haxe_Unserializer.DEFAULT_RESOLVER = r;
-	}
-	this.resolver = r;
-};
-$hxClasses["haxe.Unserializer"] = haxe_Unserializer;
-haxe_Unserializer.__name__ = ["haxe","Unserializer"];
-haxe_Unserializer.initCodes = function() {
-	var codes = [];
-	var _g1 = 0;
-	var _g = haxe_Unserializer.BASE64.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		codes[haxe_Unserializer.BASE64.charCodeAt(i)] = i;
-	}
-	return codes;
-};
-haxe_Unserializer.run = function(v) {
-	return new haxe_Unserializer(v).unserialize();
-};
-haxe_Unserializer.prototype = {
-	readDigits: function() {
-		var k = 0;
-		var s = false;
-		var fpos = this.pos;
-		while(true) {
-			var c = this.buf.charCodeAt(this.pos);
-			if(c != c) {
-				break;
-			}
-			if(c == 45) {
-				if(this.pos != fpos) {
-					break;
-				}
-				s = true;
-				this.pos++;
-				continue;
-			}
-			if(c < 48 || c > 57) {
-				break;
-			}
-			k = k * 10 + (c - 48);
-			this.pos++;
-		}
-		if(s) {
-			k *= -1;
-		}
-		return k;
-	}
-	,readFloat: function() {
-		var p1 = this.pos;
-		while(true) {
-			var c = this.buf.charCodeAt(this.pos);
-			if(c != c) {
-				break;
-			}
-			if(c >= 43 && c < 58 || c == 101 || c == 69) {
-				this.pos++;
-			} else {
-				break;
-			}
-		}
-		return parseFloat(HxOverrides.substr(this.buf,p1,this.pos - p1));
-	}
-	,unserializeObject: function(o) {
-		while(true) {
-			if(this.pos >= this.length) {
-				throw new js__$Boot_HaxeError("Invalid object");
-			}
-			if(this.buf.charCodeAt(this.pos) == 103) {
-				break;
-			}
-			var k = this.unserialize();
-			if(typeof(k) != "string") {
-				throw new js__$Boot_HaxeError("Invalid object key");
-			}
-			var v = this.unserialize();
-			o[k] = v;
-		}
-		this.pos++;
-	}
-	,unserializeEnum: function(edecl,tag) {
-		if(this.buf.charCodeAt(this.pos++) != 58) {
-			throw new js__$Boot_HaxeError("Invalid enum format");
-		}
-		var nargs = this.readDigits();
-		if(nargs == 0) {
-			return Type.createEnum(edecl,tag);
-		}
-		var args = [];
-		while(nargs-- > 0) args.push(this.unserialize());
-		return Type.createEnum(edecl,tag,args);
-	}
-	,unserialize: function() {
-		var _g = this.buf.charCodeAt(this.pos++);
-		switch(_g) {
-		case 65:
-			var name = this.unserialize();
-			var cl = this.resolver.resolveClass(name);
-			if(cl == null) {
-				throw new js__$Boot_HaxeError("Class not found " + name);
-			}
-			return cl;
-		case 66:
-			var name1 = this.unserialize();
-			var e = this.resolver.resolveEnum(name1);
-			if(e == null) {
-				throw new js__$Boot_HaxeError("Enum not found " + name1);
-			}
-			return e;
-		case 67:
-			var name2 = this.unserialize();
-			var cl1 = this.resolver.resolveClass(name2);
-			if(cl1 == null) {
-				throw new js__$Boot_HaxeError("Class not found " + name2);
-			}
-			var o = Type.createEmptyInstance(cl1);
-			this.cache.push(o);
-			o.hxUnserialize(this);
-			if(this.buf.charCodeAt(this.pos++) != 103) {
-				throw new js__$Boot_HaxeError("Invalid custom data");
-			}
-			return o;
-		case 77:
-			var h = new haxe_ds_ObjectMap();
-			this.cache.push(h);
-			var buf = this.buf;
-			while(this.buf.charCodeAt(this.pos) != 104) {
-				var s = this.unserialize();
-				h.set(s,this.unserialize());
-			}
-			this.pos++;
-			return h;
-		case 82:
-			var n = this.readDigits();
-			if(n < 0 || n >= this.scache.length) {
-				throw new js__$Boot_HaxeError("Invalid string reference");
-			}
-			return this.scache[n];
-		case 97:
-			var buf1 = this.buf;
-			var a = [];
-			this.cache.push(a);
-			while(true) {
-				var c = this.buf.charCodeAt(this.pos);
-				if(c == 104) {
-					this.pos++;
-					break;
-				}
-				if(c == 117) {
-					this.pos++;
-					var n1 = this.readDigits();
-					a[a.length + n1 - 1] = null;
-				} else {
-					a.push(this.unserialize());
-				}
-			}
-			return a;
-		case 98:
-			var h1 = new haxe_ds_StringMap();
-			this.cache.push(h1);
-			var buf2 = this.buf;
-			while(this.buf.charCodeAt(this.pos) != 104) {
-				var s1 = this.unserialize();
-				var value = this.unserialize();
-				if(__map_reserved[s1] != null) {
-					h1.setReserved(s1,value);
-				} else {
-					h1.h[s1] = value;
-				}
-			}
-			this.pos++;
-			return h1;
-		case 99:
-			var name3 = this.unserialize();
-			var cl2 = this.resolver.resolveClass(name3);
-			if(cl2 == null) {
-				throw new js__$Boot_HaxeError("Class not found " + name3);
-			}
-			var o1 = Type.createEmptyInstance(cl2);
-			this.cache.push(o1);
-			this.unserializeObject(o1);
-			return o1;
-		case 100:
-			return this.readFloat();
-		case 102:
-			return false;
-		case 105:
-			return this.readDigits();
-		case 106:
-			var name4 = this.unserialize();
-			var edecl = this.resolver.resolveEnum(name4);
-			if(edecl == null) {
-				throw new js__$Boot_HaxeError("Enum not found " + name4);
-			}
-			this.pos++;
-			var index = this.readDigits();
-			var tag = edecl.__constructs__.slice()[index];
-			if(tag == null) {
-				throw new js__$Boot_HaxeError("Unknown enum index " + name4 + "@" + index);
-			}
-			var e1 = this.unserializeEnum(edecl,tag);
-			this.cache.push(e1);
-			return e1;
-		case 107:
-			return NaN;
-		case 108:
-			var l = new List();
-			this.cache.push(l);
-			var buf3 = this.buf;
-			while(this.buf.charCodeAt(this.pos) != 104) l.add(this.unserialize());
-			this.pos++;
-			return l;
-		case 109:
-			return -Infinity;
-		case 110:
-			return null;
-		case 111:
-			var o2 = { };
-			this.cache.push(o2);
-			this.unserializeObject(o2);
-			return o2;
-		case 112:
-			return Infinity;
-		case 113:
-			var h2 = new haxe_ds_IntMap();
-			this.cache.push(h2);
-			var buf4 = this.buf;
-			var c1 = this.buf.charCodeAt(this.pos++);
-			while(c1 == 58) {
-				var i = this.readDigits();
-				var value1 = this.unserialize();
-				h2.h[i] = value1;
-				c1 = this.buf.charCodeAt(this.pos++);
-			}
-			if(c1 != 104) {
-				throw new js__$Boot_HaxeError("Invalid IntMap format");
-			}
-			return h2;
-		case 114:
-			var n2 = this.readDigits();
-			if(n2 < 0 || n2 >= this.cache.length) {
-				throw new js__$Boot_HaxeError("Invalid reference");
-			}
-			return this.cache[n2];
-		case 115:
-			var len = this.readDigits();
-			var buf5 = this.buf;
-			if(this.buf.charCodeAt(this.pos++) != 58 || this.length - this.pos < len) {
-				throw new js__$Boot_HaxeError("Invalid bytes length");
-			}
-			var codes = haxe_Unserializer.CODES;
-			if(codes == null) {
-				codes = haxe_Unserializer.initCodes();
-				haxe_Unserializer.CODES = codes;
-			}
-			var i1 = this.pos;
-			var rest = len & 3;
-			var size = (len >> 2) * 3 + (rest >= 2 ? rest - 1 : 0);
-			var max = i1 + (len - rest);
-			var bytes = new haxe_io_Bytes(new ArrayBuffer(size));
-			var bpos = 0;
-			while(i1 < max) {
-				var c11 = codes[buf5.charCodeAt(i1++)];
-				var c2 = codes[buf5.charCodeAt(i1++)];
-				bytes.b[bpos++] = (c11 << 2 | c2 >> 4) & 255;
-				var c3 = codes[buf5.charCodeAt(i1++)];
-				bytes.b[bpos++] = (c2 << 4 | c3 >> 2) & 255;
-				var c4 = codes[buf5.charCodeAt(i1++)];
-				bytes.b[bpos++] = (c3 << 6 | c4) & 255;
-			}
-			if(rest >= 2) {
-				var c12 = codes[buf5.charCodeAt(i1++)];
-				var c21 = codes[buf5.charCodeAt(i1++)];
-				bytes.b[bpos++] = (c12 << 2 | c21 >> 4) & 255;
-				if(rest == 3) {
-					var c31 = codes[buf5.charCodeAt(i1++)];
-					bytes.b[bpos++] = (c21 << 4 | c31 >> 2) & 255;
-				}
-			}
-			this.pos += len;
-			this.cache.push(bytes);
-			return bytes;
-		case 116:
-			return true;
-		case 118:
-			var d;
-			if(this.buf.charCodeAt(this.pos) >= 48 && this.buf.charCodeAt(this.pos) <= 57 && this.buf.charCodeAt(this.pos + 1) >= 48 && this.buf.charCodeAt(this.pos + 1) <= 57 && this.buf.charCodeAt(this.pos + 2) >= 48 && this.buf.charCodeAt(this.pos + 2) <= 57 && this.buf.charCodeAt(this.pos + 3) >= 48 && this.buf.charCodeAt(this.pos + 3) <= 57 && this.buf.charCodeAt(this.pos + 4) == 45) {
-				d = HxOverrides.strDate(HxOverrides.substr(this.buf,this.pos,19));
-				this.pos += 19;
-			} else {
-				var t = this.readFloat();
-				d = new Date(t);
-			}
-			this.cache.push(d);
-			return d;
-		case 119:
-			var name5 = this.unserialize();
-			var edecl1 = this.resolver.resolveEnum(name5);
-			if(edecl1 == null) {
-				throw new js__$Boot_HaxeError("Enum not found " + name5);
-			}
-			var e2 = this.unserializeEnum(edecl1,this.unserialize());
-			this.cache.push(e2);
-			return e2;
-		case 120:
-			throw js__$Boot_HaxeError.wrap(this.unserialize());
-			break;
-		case 121:
-			var len1 = this.readDigits();
-			if(this.buf.charCodeAt(this.pos++) != 58 || this.length - this.pos < len1) {
-				throw new js__$Boot_HaxeError("Invalid string length");
-			}
-			var s2 = HxOverrides.substr(this.buf,this.pos,len1);
-			this.pos += len1;
-			s2 = decodeURIComponent(s2.split("+").join(" "));
-			this.scache.push(s2);
-			return s2;
-		case 122:
-			return 0;
-		default:
-		}
-		this.pos--;
-		throw new js__$Boot_HaxeError("Invalid char " + this.buf.charAt(this.pos) + " at position " + this.pos);
-	}
-	,__class__: haxe_Unserializer
-};
+haxe_Timer.__name__ = true;
 var haxe_io_Bytes = function(data) {
 	this.length = data.byteLength;
 	this.b = new Uint8Array(data);
@@ -1616,7 +860,7 @@ var haxe_io_Bytes = function(data) {
 	data.bytes = this.b;
 };
 $hxClasses["haxe.io.Bytes"] = haxe_io_Bytes;
-haxe_io_Bytes.__name__ = ["haxe","io","Bytes"];
+haxe_io_Bytes.__name__ = true;
 haxe_io_Bytes.alloc = function(length) {
 	return new haxe_io_Bytes(new ArrayBuffer(length));
 };
@@ -1695,7 +939,7 @@ haxe_io_Bytes.prototype = {
 };
 var haxe_crypto_Base64 = function() { };
 $hxClasses["haxe.crypto.Base64"] = haxe_crypto_Base64;
-haxe_crypto_Base64.__name__ = ["haxe","crypto","Base64"];
+haxe_crypto_Base64.__name__ = true;
 haxe_crypto_Base64.decode = function(str,complement) {
 	if(complement == null) {
 		complement = true;
@@ -1716,7 +960,7 @@ var haxe_crypto_BaseCode = function(base) {
 	this.nbits = nbits;
 };
 $hxClasses["haxe.crypto.BaseCode"] = haxe_crypto_BaseCode;
-haxe_crypto_BaseCode.__name__ = ["haxe","crypto","BaseCode"];
+haxe_crypto_BaseCode.__name__ = true;
 haxe_crypto_BaseCode.prototype = {
 	initTable: function() {
 		var tbl = [];
@@ -1767,7 +1011,7 @@ var haxe_ds_IntMap = function() {
 	this.h = { };
 };
 $hxClasses["haxe.ds.IntMap"] = haxe_ds_IntMap;
-haxe_ds_IntMap.__name__ = ["haxe","ds","IntMap"];
+haxe_ds_IntMap.__name__ = true;
 haxe_ds_IntMap.__interfaces__ = [haxe_IMap];
 haxe_ds_IntMap.prototype = {
 	set: function(key,value) {
@@ -1807,7 +1051,7 @@ var haxe_ds_ObjectMap = function() {
 	this.h = { __keys__ : { }};
 };
 $hxClasses["haxe.ds.ObjectMap"] = haxe_ds_ObjectMap;
-haxe_ds_ObjectMap.__name__ = ["haxe","ds","ObjectMap"];
+haxe_ds_ObjectMap.__name__ = true;
 haxe_ds_ObjectMap.__interfaces__ = [haxe_IMap];
 haxe_ds_ObjectMap.assignId = function(obj) {
 	return obj.__id__ = ++haxe_ds_ObjectMap.count;
@@ -1862,7 +1106,7 @@ var haxe_ds__$StringMap_StringMapIterator = function(map,keys) {
 	this.count = keys.length;
 };
 $hxClasses["haxe.ds._StringMap.StringMapIterator"] = haxe_ds__$StringMap_StringMapIterator;
-haxe_ds__$StringMap_StringMapIterator.__name__ = ["haxe","ds","_StringMap","StringMapIterator"];
+haxe_ds__$StringMap_StringMapIterator.__name__ = true;
 haxe_ds__$StringMap_StringMapIterator.prototype = {
 	hasNext: function() {
 		return this.index < this.count;
@@ -1882,7 +1126,7 @@ var haxe_ds_StringMap = function() {
 	this.h = { };
 };
 $hxClasses["haxe.ds.StringMap"] = haxe_ds_StringMap;
-haxe_ds_StringMap.__name__ = ["haxe","ds","StringMap"];
+haxe_ds_StringMap.__name__ = true;
 haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
 haxe_ds_StringMap.prototype = {
 	set: function(key,value) {
@@ -1963,7 +1207,7 @@ haxe_ds_StringMap.prototype = {
 	}
 	,__class__: haxe_ds_StringMap
 };
-var haxe_io_Error = $hxClasses["haxe.io.Error"] = { __ename__ : ["haxe","io","Error"], __constructs__ : ["Blocked","Overflow","OutsideBounds","Custom"] };
+var haxe_io_Error = { __ename__ : true, __constructs__ : ["Blocked","Overflow","OutsideBounds","Custom"] };
 haxe_io_Error.Blocked = ["Blocked",0];
 haxe_io_Error.Blocked.toString = $estr;
 haxe_io_Error.Blocked.__enum__ = haxe_io_Error;
@@ -1976,7 +1220,7 @@ haxe_io_Error.OutsideBounds.__enum__ = haxe_io_Error;
 haxe_io_Error.Custom = function(e) { var $x = ["Custom",3,e]; $x.__enum__ = haxe_io_Error; $x.toString = $estr; return $x; };
 var haxe_io_FPHelper = function() { };
 $hxClasses["haxe.io.FPHelper"] = haxe_io_FPHelper;
-haxe_io_FPHelper.__name__ = ["haxe","io","FPHelper"];
+haxe_io_FPHelper.__name__ = true;
 haxe_io_FPHelper.i32ToFloat = function(i) {
 	var sign = 1 - (i >>> 31 << 1);
 	var exp = i >>> 23 & 255;
@@ -2033,7 +1277,7 @@ var haxe_io_Path = function(path) {
 	}
 };
 $hxClasses["haxe.io.Path"] = haxe_io_Path;
-haxe_io_Path.__name__ = ["haxe","io","Path"];
+haxe_io_Path.__name__ = true;
 haxe_io_Path.directory = function(path) {
 	var s = new haxe_io_Path(path);
 	if(s.dir == null) {
@@ -2149,91 +1393,6 @@ haxe_io_Path.addTrailingSlash = function(path) {
 haxe_io_Path.prototype = {
 	__class__: haxe_io_Path
 };
-var haxe_net_ReadyState = $hxClasses["haxe.net.ReadyState"] = { __ename__ : ["haxe","net","ReadyState"], __constructs__ : ["Connecting","Open","Closing","Closed"] };
-haxe_net_ReadyState.Connecting = ["Connecting",0];
-haxe_net_ReadyState.Connecting.toString = $estr;
-haxe_net_ReadyState.Connecting.__enum__ = haxe_net_ReadyState;
-haxe_net_ReadyState.Open = ["Open",1];
-haxe_net_ReadyState.Open.toString = $estr;
-haxe_net_ReadyState.Open.__enum__ = haxe_net_ReadyState;
-haxe_net_ReadyState.Closing = ["Closing",2];
-haxe_net_ReadyState.Closing.toString = $estr;
-haxe_net_ReadyState.Closing.__enum__ = haxe_net_ReadyState;
-haxe_net_ReadyState.Closed = ["Closed",3];
-haxe_net_ReadyState.Closed.toString = $estr;
-haxe_net_ReadyState.Closed.__enum__ = haxe_net_ReadyState;
-var haxe_net_WebSocket = function() {
-};
-$hxClasses["haxe.net.WebSocket"] = haxe_net_WebSocket;
-haxe_net_WebSocket.__name__ = ["haxe","net","WebSocket"];
-haxe_net_WebSocket.create = function(url,protocols,origin,debug) {
-	if(debug == null) {
-		debug = false;
-	}
-	return new haxe_net_impl_WebSocketJs(url,protocols);
-};
-haxe_net_WebSocket.prototype = {
-	process: function() {
-	}
-	,sendString: function(message) {
-	}
-	,onopen: function() {
-	}
-	,onerror: function(message) {
-	}
-	,onmessageString: function(message) {
-	}
-	,onmessageBytes: function(message) {
-	}
-	,onclose: function() {
-	}
-	,__class__: haxe_net_WebSocket
-};
-var haxe_net_impl_WebSocketJs = function(url,protocols) {
-	var _gthis = this;
-	haxe_net_WebSocket.call(this);
-	if(protocols != null) {
-		this.impl = new WebSocket(url,protocols);
-	} else {
-		this.impl = new WebSocket(url);
-	}
-	this.impl.onopen = function(e) {
-		_gthis.onopen();
-	};
-	this.impl.onclose = function(e1) {
-		_gthis.onclose();
-	};
-	this.impl.onerror = function(e2) {
-		_gthis.onerror("error");
-	};
-	this.impl.onmessage = function(e3) {
-		var m = e3.data;
-		if(typeof(m) == "string") {
-			_gthis.onmessageString(m);
-		} else if(js_Boot.__instanceof(m,ArrayBuffer)) {
-			haxe_Log.trace("Unhandled websocket onmessage " + m,{ fileName : "WebSocketJs.hx", lineNumber : 33, className : "haxe.net.impl.WebSocketJs", methodName : "new"});
-		} else if(js_Boot.__instanceof(m,Blob)) {
-			var arrayBuffer;
-			var fileReader = new FileReader();
-			fileReader.onload = function() {
-				arrayBuffer = fileReader.result;
-				_gthis.onmessageBytes(haxe_io_Bytes.ofData(arrayBuffer));
-			};
-			fileReader.readAsArrayBuffer(js_Boot.__cast(m , Blob));
-		} else {
-			haxe_Log.trace("Unhandled websocket onmessage " + m,{ fileName : "WebSocketJs.hx", lineNumber : 44, className : "haxe.net.impl.WebSocketJs", methodName : "new"});
-		}
-	};
-};
-$hxClasses["haxe.net.impl.WebSocketJs"] = haxe_net_impl_WebSocketJs;
-haxe_net_impl_WebSocketJs.__name__ = ["haxe","net","impl","WebSocketJs"];
-haxe_net_impl_WebSocketJs.__super__ = haxe_net_WebSocket;
-haxe_net_impl_WebSocketJs.prototype = $extend(haxe_net_WebSocket.prototype,{
-	sendString: function(message) {
-		this.impl.send(message);
-	}
-	,__class__: haxe_net_impl_WebSocketJs
-});
 var js__$Boot_HaxeError = function(val) {
 	Error.call(this);
 	this.val = val;
@@ -2243,7 +1402,7 @@ var js__$Boot_HaxeError = function(val) {
 	}
 };
 $hxClasses["js._Boot.HaxeError"] = js__$Boot_HaxeError;
-js__$Boot_HaxeError.__name__ = ["js","_Boot","HaxeError"];
+js__$Boot_HaxeError.__name__ = true;
 js__$Boot_HaxeError.wrap = function(val) {
 	if((val instanceof Error)) {
 		return val;
@@ -2257,7 +1416,7 @@ js__$Boot_HaxeError.prototype = $extend(Error.prototype,{
 });
 var js_Boot = function() { };
 $hxClasses["js.Boot"] = js_Boot;
-js_Boot.__name__ = ["js","Boot"];
+js_Boot.__name__ = true;
 js_Boot.__unhtml = function(s) {
 	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
 };
@@ -2482,7 +1641,7 @@ js_Boot.__resolveNativeClass = function(name) {
 };
 var js_html__$CanvasElement_CanvasUtil = function() { };
 $hxClasses["js.html._CanvasElement.CanvasUtil"] = js_html__$CanvasElement_CanvasUtil;
-js_html__$CanvasElement_CanvasUtil.__name__ = ["js","html","_CanvasElement","CanvasUtil"];
+js_html__$CanvasElement_CanvasUtil.__name__ = true;
 js_html__$CanvasElement_CanvasUtil.getContextWebGL = function(canvas,attribs) {
 	var _g = 0;
 	var _g1 = ["webgl","experimental-webgl"];
@@ -2513,7 +1672,7 @@ var js_html_compat_ArrayBuffer = function(a) {
 	}
 };
 $hxClasses["js.html.compat.ArrayBuffer"] = js_html_compat_ArrayBuffer;
-js_html_compat_ArrayBuffer.__name__ = ["js","html","compat","ArrayBuffer"];
+js_html_compat_ArrayBuffer.__name__ = true;
 js_html_compat_ArrayBuffer.sliceImpl = function(begin,end) {
 	var u = new Uint8Array(this,begin,end == null ? null : end - begin);
 	var result = new ArrayBuffer(u.byteLength);
@@ -2529,7 +1688,7 @@ js_html_compat_ArrayBuffer.prototype = {
 };
 var js_html_compat_Float32Array = function() { };
 $hxClasses["js.html.compat.Float32Array"] = js_html_compat_Float32Array;
-js_html_compat_Float32Array.__name__ = ["js","html","compat","Float32Array"];
+js_html_compat_Float32Array.__name__ = true;
 js_html_compat_Float32Array._new = function(arg1,offset,length) {
 	var arr;
 	if(typeof(arg1) == "number") {
@@ -2626,7 +1785,7 @@ js_html_compat_Float32Array._subarray = function(start,end) {
 };
 var js_html_compat_Uint8Array = function() { };
 $hxClasses["js.html.compat.Uint8Array"] = js_html_compat_Uint8Array;
-js_html_compat_Uint8Array.__name__ = ["js","html","compat","Uint8Array"];
+js_html_compat_Uint8Array.__name__ = true;
 js_html_compat_Uint8Array._new = function(arg1,offset,length) {
 	var arr;
 	if(typeof(arg1) == "number") {
@@ -2704,7 +1863,7 @@ var luxe_Audio = function(_core) {
 	this.core = _core;
 };
 $hxClasses["luxe.Audio"] = luxe_Audio;
-luxe_Audio.__name__ = ["luxe","Audio"];
+luxe_Audio.__name__ = true;
 luxe_Audio.prototype = {
 	init: function() {
 	}
@@ -2714,7 +1873,7 @@ luxe_Audio.prototype = {
 	}
 	,__class__: luxe_Audio
 };
-var luxe_SizeMode = $hxClasses["luxe.SizeMode"] = { __ename__ : ["luxe","SizeMode"], __constructs__ : ["fit","cover","contain"] };
+var luxe_SizeMode = { __ename__ : true, __constructs__ : ["fit","cover","contain"] };
 luxe_SizeMode.fit = ["fit",0];
 luxe_SizeMode.fit.toString = $estr;
 luxe_SizeMode.fit.__enum__ = luxe_SizeMode;
@@ -2731,7 +1890,7 @@ var luxe_Emitter = function() {
 	this.bindings = new haxe_ds_IntMap();
 };
 $hxClasses["luxe.Emitter"] = luxe_Emitter;
-luxe_Emitter.__name__ = ["luxe","Emitter"];
+luxe_Emitter.__name__ = true;
 luxe_Emitter.prototype = {
 	_emitter_destroy: function() {
 		while(this._to_remove.length > 0) {
@@ -2845,7 +2004,7 @@ var luxe_Objects = function(_name,_id) {
 	this.set_id(_id == "" ? Luxe.utils.uniqueid() : _id);
 };
 $hxClasses["luxe.Objects"] = luxe_Objects;
-luxe_Objects.__name__ = ["luxe","Objects"];
+luxe_Objects.__name__ = true;
 luxe_Objects.__super__ = luxe_Emitter;
 luxe_Objects.prototype = $extend(luxe_Emitter.prototype,{
 	set_name: function(_name) {
@@ -2951,7 +2110,7 @@ var luxe_Entity = function(_options) {
 	}
 };
 $hxClasses["luxe.Entity"] = luxe_Entity;
-luxe_Entity.__name__ = ["luxe","Entity"];
+luxe_Entity.__name__ = true;
 luxe_Entity.__super__ = luxe_Objects;
 luxe_Entity.prototype = $extend(luxe_Objects.prototype,{
 	init: function() {
@@ -3686,7 +2845,7 @@ var luxe_Camera = function(_options) {
 	luxe_Entity.call(this,{ name : _name, no_scene : _options.no_scene});
 };
 $hxClasses["luxe.Camera"] = luxe_Camera;
-luxe_Camera.__name__ = ["luxe","Camera"];
+luxe_Camera.__name__ = true;
 luxe_Camera.__super__ = luxe_Entity;
 luxe_Camera.prototype = $extend(luxe_Entity.prototype,{
 	get_viewport: function() {
@@ -4035,13 +3194,13 @@ var luxe_ID = function(_name,_id) {
 	this.id = _id == "" ? Luxe.utils.uniqueid() : _id;
 };
 $hxClasses["luxe.ID"] = luxe_ID;
-luxe_ID.__name__ = ["luxe","ID"];
+luxe_ID.__name__ = true;
 luxe_ID.prototype = {
 	__class__: luxe_ID
 };
 var luxe_Component = function() { };
 $hxClasses["luxe.Component"] = luxe_Component;
-luxe_Component.__name__ = ["luxe","Component"];
+luxe_Component.__name__ = true;
 luxe_Component.__super__ = luxe_ID;
 luxe_Component.prototype = $extend(luxe_ID.prototype,{
 	init: function() {
@@ -4080,7 +3239,7 @@ var luxe_Debug = function(_app) {
 	this.app = _app;
 };
 $hxClasses["luxe.Debug"] = luxe_Debug;
-luxe_Debug.__name__ = ["luxe","Debug"];
+luxe_Debug.__name__ = true;
 luxe_Debug.internal_trace = function(_value,_info) {
 	if(luxe_Debug.tracing != false) {
 		throw new js__$Boot_HaxeError(luxe_DebugError.assertion("tracing == false" + (" ( " + "luxe.Debug: calling trace from a trace callback is an infinite loop!" + " )")));
@@ -4409,7 +3568,7 @@ var luxe_Draw = function(_core) {
 	this.core = _core;
 };
 $hxClasses["luxe.Draw"] = luxe_Draw;
-luxe_Draw.__name__ = ["luxe","Draw"];
+luxe_Draw.__name__ = true;
 luxe_Draw.prototype = {
 	box: function(options) {
 		if(options.id == null) {
@@ -4451,7 +3610,7 @@ var snow_App = function() {
 	this.timescale = 1;
 };
 $hxClasses["snow.App"] = snow_App;
-snow_App.__name__ = ["snow","App"];
+snow_App.__name__ = true;
 snow_App.prototype = {
 	update: function(dt) {
 	}
@@ -4541,7 +3700,7 @@ var luxe_Engine = function(_game) {
 	Luxe.utils = new luxe_utils_Utils(this);
 };
 $hxClasses["luxe.Engine"] = luxe_Engine;
-luxe_Engine.__name__ = ["luxe","Engine"];
+luxe_Engine.__name__ = true;
 luxe_Engine.__super__ = snow_App;
 luxe_Engine.prototype = $extend(snow_App.prototype,{
 	run: function() {
@@ -4923,7 +4082,7 @@ luxe_Engine.prototype = $extend(snow_App.prototype,{
 });
 var luxe_Tag = function() { };
 $hxClasses["luxe.Tag"] = luxe_Tag;
-luxe_Tag.__name__ = ["luxe","Tag"];
+luxe_Tag.__name__ = true;
 var luxe_Events = function() {
 	this.event_connections = new haxe_ds_StringMap();
 	this.event_slots = new haxe_ds_StringMap();
@@ -4932,7 +4091,7 @@ var luxe_Events = function() {
 	this.event_schedules = new haxe_ds_StringMap();
 };
 $hxClasses["luxe.Events"] = luxe_Events;
-luxe_Events.__name__ = ["luxe","Events"];
+luxe_Events.__name__ = true;
 luxe_Events.prototype = {
 	destroy: function() {
 		this.clear();
@@ -5034,13 +4193,13 @@ luxe_Events.prototype = {
 };
 var luxe__$Events_EventConnection = function() { };
 $hxClasses["luxe._Events.EventConnection"] = luxe__$Events_EventConnection;
-luxe__$Events_EventConnection.__name__ = ["luxe","_Events","EventConnection"];
+luxe__$Events_EventConnection.__name__ = true;
 luxe__$Events_EventConnection.prototype = {
 	__class__: luxe__$Events_EventConnection
 };
 var luxe__$Events_EventObject = function() { };
 $hxClasses["luxe._Events.EventObject"] = luxe__$Events_EventObject;
-luxe__$Events_EventObject.__name__ = ["luxe","_Events","EventObject"];
+luxe__$Events_EventObject.__name__ = true;
 luxe__$Events_EventObject.prototype = {
 	__class__: luxe__$Events_EventObject
 };
@@ -5048,7 +4207,7 @@ var luxe_IO = function(_core) {
 	this.core = _core;
 };
 $hxClasses["luxe.IO"] = luxe_IO;
-luxe_IO.__name__ = ["luxe","IO"];
+luxe_IO.__name__ = true;
 luxe_IO.prototype = {
 	init: function() {
 	}
@@ -5064,7 +4223,7 @@ var luxe_Input = function(_core) {
 	this.input_event = new luxe_InputEvent();
 };
 $hxClasses["luxe.Input"] = luxe_Input;
-luxe_Input.__name__ = ["luxe","Input"];
+luxe_Input.__name__ = true;
 luxe_Input.prototype = {
 	init: function() {
 		this.key_bindings = new haxe_ds_StringMap();
@@ -5431,7 +4590,7 @@ luxe_Input.prototype = {
 	}
 	,__class__: luxe_Input
 };
-var luxe_InteractState = $hxClasses["luxe.InteractState"] = { __ename__ : ["luxe","InteractState"], __constructs__ : ["unknown","none","down","up","move","wheel","axis"] };
+var luxe_InteractState = { __ename__ : true, __constructs__ : ["unknown","none","down","up","move","wheel","axis"] };
 luxe_InteractState.unknown = ["unknown",0];
 luxe_InteractState.unknown.toString = $estr;
 luxe_InteractState.unknown.__enum__ = luxe_InteractState;
@@ -5453,7 +4612,7 @@ luxe_InteractState.wheel.__enum__ = luxe_InteractState;
 luxe_InteractState.axis = ["axis",6];
 luxe_InteractState.axis.toString = $estr;
 luxe_InteractState.axis.__enum__ = luxe_InteractState;
-var luxe_TextEventType = $hxClasses["luxe.TextEventType"] = { __ename__ : ["luxe","TextEventType"], __constructs__ : ["unknown","edit","input"] };
+var luxe_TextEventType = { __ename__ : true, __constructs__ : ["unknown","edit","input"] };
 luxe_TextEventType.unknown = ["unknown",0];
 luxe_TextEventType.unknown.toString = $estr;
 luxe_TextEventType.unknown.__enum__ = luxe_TextEventType;
@@ -5466,7 +4625,7 @@ luxe_TextEventType.input.__enum__ = luxe_TextEventType;
 var luxe_KeyEvent = function() {
 };
 $hxClasses["luxe.KeyEvent"] = luxe_KeyEvent;
-luxe_KeyEvent.__name__ = ["luxe","KeyEvent"];
+luxe_KeyEvent.__name__ = true;
 luxe_KeyEvent.prototype = {
 	set: function(_keycode,_scancode,_repeat,_mod,_state,_timestamp,_window_id) {
 		this.mod = _mod;
@@ -5483,7 +4642,7 @@ var luxe_TouchEvent = function() {
 	this.pos = new phoenix_Vector();
 };
 $hxClasses["luxe.TouchEvent"] = luxe_TouchEvent;
-luxe_TouchEvent.__name__ = ["luxe","TouchEvent"];
+luxe_TouchEvent.__name__ = true;
 luxe_TouchEvent.prototype = {
 	set: function(_x,_y,_dx,_dy,_touch_id,_state,_timestamp) {
 		this.x = _x;
@@ -5521,7 +4680,7 @@ luxe_TouchEvent.prototype = {
 var luxe_TextEvent = function() {
 };
 $hxClasses["luxe.TextEvent"] = luxe_TextEvent;
-luxe_TextEvent.__name__ = ["luxe","TextEvent"];
+luxe_TextEvent.__name__ = true;
 luxe_TextEvent.prototype = {
 	set: function(_text,_start,_length,_type,_timestamp,_window_id) {
 		this.text = _text;
@@ -5533,7 +4692,7 @@ luxe_TextEvent.prototype = {
 	}
 	,__class__: luxe_TextEvent
 };
-var luxe_GamepadEventType = $hxClasses["luxe.GamepadEventType"] = { __ename__ : ["luxe","GamepadEventType"], __constructs__ : ["unknown","axis","button","device_added","device_removed","device_remapped"] };
+var luxe_GamepadEventType = { __ename__ : true, __constructs__ : ["unknown","axis","button","device_added","device_removed","device_remapped"] };
 luxe_GamepadEventType.unknown = ["unknown",0];
 luxe_GamepadEventType.unknown.toString = $estr;
 luxe_GamepadEventType.unknown.__enum__ = luxe_GamepadEventType;
@@ -5555,7 +4714,7 @@ luxe_GamepadEventType.device_remapped.__enum__ = luxe_GamepadEventType;
 var luxe_GamepadEvent = function() {
 };
 $hxClasses["luxe.GamepadEvent"] = luxe_GamepadEvent;
-luxe_GamepadEvent.__name__ = ["luxe","GamepadEvent"];
+luxe_GamepadEvent.__name__ = true;
 luxe_GamepadEvent.prototype = {
 	set_axis: function(_gamepad,_axis,_value,_timestamp) {
 		this.id = null;
@@ -5599,7 +4758,7 @@ var luxe_MouseEvent = function() {
 	this.pos = new phoenix_Vector();
 };
 $hxClasses["luxe.MouseEvent"] = luxe_MouseEvent;
-luxe_MouseEvent.__name__ = ["luxe","MouseEvent"];
+luxe_MouseEvent.__name__ = true;
 luxe_MouseEvent.prototype = {
 	set_press: function(_x,_y,_button,_state,_timestamp,_window_id) {
 		this.x = _x;
@@ -5677,7 +4836,7 @@ luxe_MouseEvent.prototype = {
 	}
 	,__class__: luxe_MouseEvent
 };
-var luxe_InputEventType = $hxClasses["luxe.InputEventType"] = { __ename__ : ["luxe","InputEventType"], __constructs__ : ["unknown","mouse","touch","key","gamepad"] };
+var luxe_InputEventType = { __ename__ : true, __constructs__ : ["unknown","mouse","touch","key","gamepad"] };
 luxe_InputEventType.unknown = ["unknown",0];
 luxe_InputEventType.unknown.toString = $estr;
 luxe_InputEventType.unknown.__enum__ = luxe_InputEventType;
@@ -5696,7 +4855,7 @@ luxe_InputEventType.gamepad.__enum__ = luxe_InputEventType;
 var luxe_InputEvent = function() {
 };
 $hxClasses["luxe.InputEvent"] = luxe_InputEvent;
-luxe_InputEvent.__name__ = ["luxe","InputEvent"];
+luxe_InputEvent.__name__ = true;
 luxe_InputEvent.prototype = {
 	set_key: function(_name,_state,_key_event) {
 		this.set_common(_name,luxe_InputEventType.key,_state);
@@ -5731,7 +4890,7 @@ luxe_InputEvent.prototype = {
 	}
 	,__class__: luxe_InputEvent
 };
-var luxe_DebugError = $hxClasses["luxe.DebugError"] = { __ename__ : ["luxe","DebugError"], __constructs__ : ["assertion","null_assertion"] };
+var luxe_DebugError = { __ename__ : true, __constructs__ : ["assertion","null_assertion"] };
 luxe_DebugError.assertion = function(expr) { var $x = ["assertion",0,expr]; $x.__enum__ = luxe_DebugError; $x.toString = $estr; return $x; };
 luxe_DebugError.null_assertion = function(expr) { var $x = ["null_assertion",1,expr]; $x.__enum__ = luxe_DebugError; $x.toString = $estr; return $x; };
 var luxe_Visual = function(_options) {
@@ -5777,7 +4936,7 @@ var luxe_Visual = function(_options) {
 	}
 };
 $hxClasses["luxe.Visual"] = luxe_Visual;
-luxe_Visual.__name__ = ["luxe","Visual"];
+luxe_Visual.__name__ = true;
 luxe_Visual.__super__ = luxe_Entity;
 luxe_Visual.prototype = $extend(luxe_Entity.prototype,{
 	_create_geometry: function() {
@@ -6147,7 +5306,7 @@ var luxe_Parcel = function(_options) {
 	this.system.track(this);
 };
 $hxClasses["luxe.Parcel"] = luxe_Parcel;
-luxe_Parcel.__name__ = ["luxe","Parcel"];
+luxe_Parcel.__name__ = true;
 luxe_Parcel.prototype = {
 	load: function(_load_id) {
 		var _gthis = this;
@@ -6438,7 +5597,7 @@ var luxe_Physics = function(_core) {
 	this.emitter = new luxe_Emitter();
 };
 $hxClasses["luxe.Physics"] = luxe_Physics;
-luxe_Physics.__name__ = ["luxe","Physics"];
+luxe_Physics.__name__ = true;
 luxe_Physics.prototype = {
 	init: function() {
 		this.engines = [];
@@ -6494,7 +5653,7 @@ luxe_Physics.prototype = {
 };
 var luxe_PhysicsEngine = function() { };
 $hxClasses["luxe.PhysicsEngine"] = luxe_PhysicsEngine;
-luxe_PhysicsEngine.__name__ = ["luxe","PhysicsEngine"];
+luxe_PhysicsEngine.__name__ = true;
 luxe_PhysicsEngine.prototype = {
 	process: function() {
 	}
@@ -6511,7 +5670,7 @@ var luxe_Resources = function() {
 	this.stats = new luxe_ResourceStats();
 };
 $hxClasses["luxe.Resources"] = luxe_Resources;
-luxe_Resources.__name__ = ["luxe","Resources"];
+luxe_Resources.__name__ = true;
 luxe_Resources.prototype = {
 	track: function(_cache) {
 		if(_cache == null) {
@@ -6756,7 +5915,7 @@ var luxe_ResourceStats = function() {
 	this.total = 0;
 };
 $hxClasses["luxe.ResourceStats"] = luxe_ResourceStats;
-luxe_ResourceStats.__name__ = ["luxe","ResourceStats"];
+luxe_ResourceStats.__name__ = true;
 luxe_ResourceStats.prototype = {
 	__class__: luxe_ResourceStats
 };
@@ -6809,7 +5968,7 @@ var luxe_Scene = function(_name) {
 	}
 };
 $hxClasses["luxe.Scene"] = luxe_Scene;
-luxe_Scene.__name__ = ["luxe","Scene"];
+luxe_Scene.__name__ = true;
 luxe_Scene.__super__ = luxe_Objects;
 luxe_Scene.prototype = $extend(luxe_Objects.prototype,{
 	add: function(entity) {
@@ -7158,7 +6317,7 @@ var luxe_Screen = function(_core,_w,_h) {
 	this.height = _h;
 };
 $hxClasses["luxe.Screen"] = luxe_Screen;
-luxe_Screen.__name__ = ["luxe","Screen"];
+luxe_Screen.__name__ = true;
 luxe_Screen.prototype = {
 	internal_resized: function(_w,_h) {
 		this.width = _w;
@@ -7186,7 +6345,7 @@ var luxe_Cursor = function(_screen) {
 	this.pos = new phoenix_Vector();
 };
 $hxClasses["luxe.Cursor"] = luxe_Cursor;
-luxe_Cursor.__name__ = ["luxe","Cursor"];
+luxe_Cursor.__name__ = true;
 luxe_Cursor.prototype = {
 	get_grab: function() {
 		return this.grab;
@@ -7218,7 +6377,7 @@ var luxe_Sprite = function(options) {
 	luxe_Visual.call(this,options);
 };
 $hxClasses["luxe.Sprite"] = luxe_Sprite;
-luxe_Sprite.__name__ = ["luxe","Sprite"];
+luxe_Sprite.__name__ = true;
 luxe_Sprite.__super__ = luxe_Visual;
 luxe_Sprite.prototype = $extend(luxe_Visual.prototype,{
 	on_geometry_created: function() {
@@ -7550,7 +6709,7 @@ var luxe_Text = function(_options) {
 	this.text_bounds.set(_x,_y,_tw,_th);
 };
 $hxClasses["luxe.Text"] = luxe_Text;
-luxe_Text.__name__ = ["luxe","Text"];
+luxe_Text.__name__ = true;
 luxe_Text.__super__ = luxe_Visual;
 luxe_Text.prototype = $extend(luxe_Visual.prototype,{
 	set_text: function(_s) {
@@ -7723,7 +6882,7 @@ var luxe_Timer = function(_core) {
 	this.timers = [];
 };
 $hxClasses["luxe.Timer"] = luxe_Timer;
-luxe_Timer.__name__ = ["luxe","Timer"];
+luxe_Timer.__name__ = true;
 luxe_Timer.prototype = {
 	init: function() {
 	}
@@ -7768,7 +6927,7 @@ var luxe_components_Components = function(_entity) {
 	this.entity = _entity;
 };
 $hxClasses["luxe.components.Components"] = luxe_components_Components;
-luxe_components_Components.__name__ = ["luxe","components","Components"];
+luxe_components_Components.__name__ = true;
 luxe_components_Components.prototype = {
 	destroy: function() {
 		this.components.map = null;
@@ -7783,7 +6942,7 @@ var luxe_debug_DebugView = function(_debug) {
 	this.debug = _debug;
 };
 $hxClasses["luxe.debug.DebugView"] = luxe_debug_DebugView;
-luxe_debug_DebugView.__name__ = ["luxe","debug","DebugView"];
+luxe_debug_DebugView.__name__ = true;
 luxe_debug_DebugView.__super__ = luxe_Objects;
 luxe_debug_DebugView.prototype = $extend(luxe_Objects.prototype,{
 	refresh: function() {
@@ -7837,7 +6996,7 @@ var luxe_debug_Inspector = function(_options) {
 	}
 };
 $hxClasses["luxe.debug.Inspector"] = luxe_debug_Inspector;
-luxe_debug_Inspector.__name__ = ["luxe","debug","Inspector"];
+luxe_debug_Inspector.__name__ = true;
 luxe_debug_Inspector.prototype = {
 	refresh: function() {
 		if(this.window == null) {
@@ -7923,7 +7082,7 @@ var phoenix_Color = function(_r,_g,_b,_a) {
 	this.a = _a;
 };
 $hxClasses["phoenix.Color"] = phoenix_Color;
-phoenix_Color.__name__ = ["phoenix","Color"];
+phoenix_Color.__name__ = true;
 phoenix_Color.random = function(_include_alpha) {
 	if(_include_alpha == null) {
 		_include_alpha = false;
@@ -8079,7 +7238,7 @@ var luxe_debug_ProfilerDebugView = function(_debug) {
 	luxe_debug_ProfilerDebugView.lists = new haxe_ds_StringMap();
 };
 $hxClasses["luxe.debug.ProfilerDebugView"] = luxe_debug_ProfilerDebugView;
-luxe_debug_ProfilerDebugView.__name__ = ["luxe","debug","ProfilerDebugView"];
+luxe_debug_ProfilerDebugView.__name__ = true;
 luxe_debug_ProfilerDebugView.start = function(_id,_max) {
 	var _this = luxe_debug_ProfilerDebugView.lists;
 	var _item = __map_reserved[_id] != null ? _this.getReserved(_id) : _this.h[_id];
@@ -8146,7 +7305,7 @@ var luxe_debug__$ProfilerDebugView_ProfilerValue = function(_name,_bar) {
 	this.offsets = [];
 };
 $hxClasses["luxe.debug._ProfilerDebugView.ProfilerValue"] = luxe_debug__$ProfilerDebugView_ProfilerValue;
-luxe_debug__$ProfilerDebugView_ProfilerValue.__name__ = ["luxe","debug","_ProfilerDebugView","ProfilerValue"];
+luxe_debug__$ProfilerDebugView_ProfilerValue.__name__ = true;
 luxe_debug__$ProfilerDebugView_ProfilerValue.prototype = {
 	set: function() {
 		var _this = Luxe.core.app;
@@ -8194,7 +7353,7 @@ var luxe_debug__$ProfilerDebugView_ProfilerGraph = function(_name,_bg) {
 	this.set_max((16.6666666666666679 * n | 0) / n);
 };
 $hxClasses["luxe.debug._ProfilerDebugView.ProfilerGraph"] = luxe_debug__$ProfilerDebugView_ProfilerGraph;
-luxe_debug__$ProfilerDebugView_ProfilerGraph.__name__ = ["luxe","debug","_ProfilerDebugView","ProfilerGraph"];
+luxe_debug__$ProfilerDebugView_ProfilerGraph.__name__ = true;
 luxe_debug__$ProfilerDebugView_ProfilerGraph.prototype = {
 	create: function() {
 		this.segment = this.width / this.history;
@@ -8401,7 +7560,7 @@ var luxe_debug__$ProfilerDebugView_ProfilerBar = function(_name,_max,_color) {
 	this.hide();
 };
 $hxClasses["luxe.debug._ProfilerDebugView.ProfilerBar"] = luxe_debug__$ProfilerDebugView_ProfilerBar;
-luxe_debug__$ProfilerDebugView_ProfilerBar.__name__ = ["luxe","debug","_ProfilerDebugView","ProfilerBar"];
+luxe_debug__$ProfilerDebugView_ProfilerBar.__name__ = true;
 luxe_debug__$ProfilerDebugView_ProfilerBar.prototype = {
 	hide: function() {
 		this.visible = false;
@@ -8558,7 +7717,7 @@ var luxe_debug_SceneDebugView = function(_debug) {
 	this.scenes = [];
 };
 $hxClasses["luxe.debug.SceneDebugView"] = luxe_debug_SceneDebugView;
-luxe_debug_SceneDebugView.__name__ = ["luxe","debug","SceneDebugView"];
+luxe_debug_SceneDebugView.__name__ = true;
 luxe_debug_SceneDebugView.__super__ = luxe_debug_DebugView;
 luxe_debug_SceneDebugView.prototype = $extend(luxe_debug_DebugView.prototype,{
 	create: function() {
@@ -8832,7 +7991,7 @@ var luxe_debug_StatsDebugView = function(_debug) {
 	this._render_stats = { batchers : 0, geometry_count : 0, dynamic_batched_count : 0, static_batched_count : 0, visible_count : 0, draw_calls : 0, vert_count : 0};
 };
 $hxClasses["luxe.debug.StatsDebugView"] = luxe_debug_StatsDebugView;
-luxe_debug_StatsDebugView.__name__ = ["luxe","debug","StatsDebugView"];
+luxe_debug_StatsDebugView.__name__ = true;
 luxe_debug_StatsDebugView.__super__ = luxe_debug_DebugView;
 luxe_debug_StatsDebugView.prototype = $extend(luxe_debug_DebugView.prototype,{
 	get_render_stats_string: function() {
@@ -9216,7 +8375,7 @@ var luxe_debug_TraceDebugView = function(_debug) {
 	this.add_line("luxe version " + ("" + _this.build + " / debug:" + Std.string(_this.app.debug) + " / os:" + _this.app.os + " / platform:" + _this.app.platform));
 };
 $hxClasses["luxe.debug.TraceDebugView"] = luxe_debug_TraceDebugView;
-luxe_debug_TraceDebugView.__name__ = ["luxe","debug","TraceDebugView"];
+luxe_debug_TraceDebugView.__name__ = true;
 luxe_debug_TraceDebugView.__super__ = luxe_debug_DebugView;
 luxe_debug_TraceDebugView.prototype = $extend(luxe_debug_DebugView.prototype,{
 	on_trace: function(v,inf) {
@@ -9299,7 +8458,7 @@ luxe_debug_TraceDebugView.prototype = $extend(luxe_debug_DebugView.prototype,{
 });
 var luxe_importers_bitmapfont_BitmapFontParser = function() { };
 $hxClasses["luxe.importers.bitmapfont.BitmapFontParser"] = luxe_importers_bitmapfont_BitmapFontParser;
-luxe_importers_bitmapfont_BitmapFontParser.__name__ = ["luxe","importers","bitmapfont","BitmapFontParser"];
+luxe_importers_bitmapfont_BitmapFontParser.__name__ = true;
 luxe_importers_bitmapfont_BitmapFontParser.parse = function(_font_data) {
 	if(_font_data.length == 0) {
 		throw new js__$Boot_HaxeError("BitmapFont:Parser: _font_data is 0 length");
@@ -9415,7 +8574,7 @@ var luxe_resource_Resource = function(_options) {
 	this.set_ref(1);
 };
 $hxClasses["luxe.resource.Resource"] = luxe_resource_Resource;
-luxe_resource_Resource.__name__ = ["luxe","resource","Resource"];
+luxe_resource_Resource.__name__ = true;
 luxe_resource_Resource.prototype = {
 	destroy: function(_force) {
 		if(_force == null) {
@@ -9483,7 +8642,7 @@ var luxe_resource_BytesResource = function(_options) {
 	this.asset = _options.asset;
 };
 $hxClasses["luxe.resource.BytesResource"] = luxe_resource_BytesResource;
-luxe_resource_BytesResource.__name__ = ["luxe","resource","BytesResource"];
+luxe_resource_BytesResource.__name__ = true;
 luxe_resource_BytesResource.__super__ = luxe_resource_Resource;
 luxe_resource_BytesResource.prototype = $extend(luxe_resource_Resource.prototype,{
 	reload: function() {
@@ -9523,7 +8682,7 @@ var luxe_resource_TextResource = function(_options) {
 	this.asset = _options.asset;
 };
 $hxClasses["luxe.resource.TextResource"] = luxe_resource_TextResource;
-luxe_resource_TextResource.__name__ = ["luxe","resource","TextResource"];
+luxe_resource_TextResource.__name__ = true;
 luxe_resource_TextResource.__super__ = luxe_resource_Resource;
 luxe_resource_TextResource.prototype = $extend(luxe_resource_Resource.prototype,{
 	reload: function() {
@@ -9563,7 +8722,7 @@ var luxe_resource_JSONResource = function(_options) {
 	this.asset = _options.asset;
 };
 $hxClasses["luxe.resource.JSONResource"] = luxe_resource_JSONResource;
-luxe_resource_JSONResource.__name__ = ["luxe","resource","JSONResource"];
+luxe_resource_JSONResource.__name__ = true;
 luxe_resource_JSONResource.__super__ = luxe_resource_Resource;
 luxe_resource_JSONResource.prototype = $extend(luxe_resource_Resource.prototype,{
 	reload: function() {
@@ -9611,7 +8770,7 @@ var luxe_resource_AudioResource = function(_options) {
 	}
 };
 $hxClasses["luxe.resource.AudioResource"] = luxe_resource_AudioResource;
-luxe_resource_AudioResource.__name__ = ["luxe","resource","AudioResource"];
+luxe_resource_AudioResource.__name__ = true;
 luxe_resource_AudioResource.__super__ = luxe_resource_Resource;
 luxe_resource_AudioResource.prototype = $extend(luxe_resource_Resource.prototype,{
 	reload: function() {
@@ -9663,7 +8822,7 @@ var luxe_structural_BalancedBSTIterator_$phoenix_$geometry_$GeometryKey_$phoenix
 	this.rightest = _node1;
 };
 $hxClasses["luxe.structural.BalancedBSTIterator_phoenix_geometry_GeometryKey_phoenix_geometry_Geometry"] = luxe_structural_BalancedBSTIterator_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry;
-luxe_structural_BalancedBSTIterator_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry.__name__ = ["luxe","structural","BalancedBSTIterator_phoenix_geometry_GeometryKey_phoenix_geometry_Geometry"];
+luxe_structural_BalancedBSTIterator_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry.__name__ = true;
 luxe_structural_BalancedBSTIterator_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry.prototype = {
 	hasNext: function() {
 		if(this.current == null || this.rightest == null) {
@@ -9711,7 +8870,7 @@ var luxe_structural_BalancedBSTNode_$phoenix_$geometry_$GeometryKey_$phoenix_$ge
 	this.color = _color;
 };
 $hxClasses["luxe.structural.BalancedBSTNode_phoenix_geometry_GeometryKey_phoenix_geometry_Geometry"] = luxe_structural_BalancedBSTNode_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry;
-luxe_structural_BalancedBSTNode_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry.__name__ = ["luxe","structural","BalancedBSTNode_phoenix_geometry_GeometryKey_phoenix_geometry_Geometry"];
+luxe_structural_BalancedBSTNode_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry.__name__ = true;
 luxe_structural_BalancedBSTNode_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry.prototype = {
 	__class__: luxe_structural_BalancedBSTNode_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry
 };
@@ -9719,7 +8878,7 @@ var luxe_structural_BalancedBST_$phoenix_$geometry_$GeometryKey_$phoenix_$geomet
 	this.compare = compare_function;
 };
 $hxClasses["luxe.structural.BalancedBST_phoenix_geometry_GeometryKey_phoenix_geometry_Geometry"] = luxe_structural_BalancedBST_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry;
-luxe_structural_BalancedBST_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry.__name__ = ["luxe","structural","BalancedBST_phoenix_geometry_GeometryKey_phoenix_geometry_Geometry"];
+luxe_structural_BalancedBST_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry.__name__ = true;
 luxe_structural_BalancedBST_$phoenix_$geometry_$GeometryKey_$phoenix_$geometry_$Geometry.prototype = {
 	contains: function(_key) {
 		return this.find(_key) != null;
@@ -10028,7 +9187,7 @@ var luxe_structural_OrderedMapIterator_$String_$luxe_$Component = function(omap)
 	this.map = omap;
 };
 $hxClasses["luxe.structural.OrderedMapIterator_String_luxe_Component"] = luxe_structural_OrderedMapIterator_$String_$luxe_$Component;
-luxe_structural_OrderedMapIterator_$String_$luxe_$Component.__name__ = ["luxe","structural","OrderedMapIterator_String_luxe_Component"];
+luxe_structural_OrderedMapIterator_$String_$luxe_$Component.__name__ = true;
 luxe_structural_OrderedMapIterator_$String_$luxe_$Component.prototype = {
 	hasNext: function() {
 		return this.index < this.map._keys.length;
@@ -10043,7 +9202,7 @@ var luxe_structural_OrderedMap_$String_$luxe_$Component = function(_map) {
 	this.map = _map;
 };
 $hxClasses["luxe.structural.OrderedMap_String_luxe_Component"] = luxe_structural_OrderedMap_$String_$luxe_$Component;
-luxe_structural_OrderedMap_$String_$luxe_$Component.__name__ = ["luxe","structural","OrderedMap_String_luxe_Component"];
+luxe_structural_OrderedMap_$String_$luxe_$Component.__name__ = true;
 luxe_structural_OrderedMap_$String_$luxe_$Component.__interfaces__ = [haxe_IMap];
 luxe_structural_OrderedMap_$String_$luxe_$Component.prototype = {
 	set: function(key,value) {
@@ -10072,7 +9231,7 @@ luxe_structural_OrderedMap_$String_$luxe_$Component.prototype = {
 };
 var luxe_tween_actuators_IGenericActuator = function() { };
 $hxClasses["luxe.tween.actuators.IGenericActuator"] = luxe_tween_actuators_IGenericActuator;
-luxe_tween_actuators_IGenericActuator.__name__ = ["luxe","tween","actuators","IGenericActuator"];
+luxe_tween_actuators_IGenericActuator.__name__ = true;
 luxe_tween_actuators_IGenericActuator.prototype = {
 	__class__: luxe_tween_actuators_IGenericActuator
 };
@@ -10092,7 +9251,7 @@ var luxe_tween_actuators_GenericActuator = function(target,duration,properties) 
 	this._ease = luxe_tween_Actuate.defaultEase;
 };
 $hxClasses["luxe.tween.actuators.GenericActuator"] = luxe_tween_actuators_GenericActuator;
-luxe_tween_actuators_GenericActuator.__name__ = ["luxe","tween","actuators","GenericActuator"];
+luxe_tween_actuators_GenericActuator.__name__ = true;
 luxe_tween_actuators_GenericActuator.__interfaces__ = [luxe_tween_actuators_IGenericActuator];
 luxe_tween_actuators_GenericActuator.prototype = {
 	apply: function() {
@@ -10261,7 +9420,7 @@ var luxe_tween_actuators_SimpleActuator = function(target,duration,properties) {
 	}
 };
 $hxClasses["luxe.tween.actuators.SimpleActuator"] = luxe_tween_actuators_SimpleActuator;
-luxe_tween_actuators_SimpleActuator.__name__ = ["luxe","tween","actuators","SimpleActuator"];
+luxe_tween_actuators_SimpleActuator.__name__ = true;
 luxe_tween_actuators_SimpleActuator.on_internal_update = function(_) {
 	luxe_tween_actuators_SimpleActuator.update_timer += Luxe.core.frame_delta;
 	var _this = Luxe.core.app;
@@ -10577,21 +9736,21 @@ luxe_tween_actuators_SimpleActuator.prototype = $extend(luxe_tween_actuators_Gen
 });
 var luxe_tween_easing_Quad = function() { };
 $hxClasses["luxe.tween.easing.Quad"] = luxe_tween_easing_Quad;
-luxe_tween_easing_Quad.__name__ = ["luxe","tween","easing","Quad"];
+luxe_tween_easing_Quad.__name__ = true;
 luxe_tween_easing_Quad.__properties__ = {get_easeOut:"get_easeOut"};
 luxe_tween_easing_Quad.get_easeOut = function() {
 	return new luxe_tween_easing_QuadEaseOut();
 };
 var luxe_tween_easing_IEasing = function() { };
 $hxClasses["luxe.tween.easing.IEasing"] = luxe_tween_easing_IEasing;
-luxe_tween_easing_IEasing.__name__ = ["luxe","tween","easing","IEasing"];
+luxe_tween_easing_IEasing.__name__ = true;
 luxe_tween_easing_IEasing.prototype = {
 	__class__: luxe_tween_easing_IEasing
 };
 var luxe_tween_easing_QuadEaseOut = function() {
 };
 $hxClasses["luxe.tween.easing.QuadEaseOut"] = luxe_tween_easing_QuadEaseOut;
-luxe_tween_easing_QuadEaseOut.__name__ = ["luxe","tween","easing","QuadEaseOut"];
+luxe_tween_easing_QuadEaseOut.__name__ = true;
 luxe_tween_easing_QuadEaseOut.__interfaces__ = [luxe_tween_easing_IEasing];
 luxe_tween_easing_QuadEaseOut.prototype = {
 	calculate: function(k) {
@@ -10601,7 +9760,7 @@ luxe_tween_easing_QuadEaseOut.prototype = {
 };
 var luxe_tween_Actuate = function() { };
 $hxClasses["luxe.tween.Actuate"] = luxe_tween_Actuate;
-luxe_tween_Actuate.__name__ = ["luxe","tween","Actuate"];
+luxe_tween_Actuate.__name__ = true;
 luxe_tween_Actuate.apply = function(target,properties,customActuator) {
 	luxe_tween_Actuate.stop(target,properties);
 	if(customActuator == null) {
@@ -10696,7 +9855,7 @@ luxe_tween_Actuate.unload = function(actuator) {
 };
 var luxe_tween_IComponentPath = function() { };
 $hxClasses["luxe.tween.IComponentPath"] = luxe_tween_IComponentPath;
-luxe_tween_IComponentPath.__name__ = ["luxe","tween","IComponentPath"];
+luxe_tween_IComponentPath.__name__ = true;
 luxe_tween_IComponentPath.prototype = {
 	__class__: luxe_tween_IComponentPath
 	,__properties__: {get_end:"get_end"}
@@ -10719,7 +9878,7 @@ var luxe_tween_actuators_MethodActuator = function(target,duration,properties) {
 	}
 };
 $hxClasses["luxe.tween.actuators.MethodActuator"] = luxe_tween_actuators_MethodActuator;
-luxe_tween_actuators_MethodActuator.__name__ = ["luxe","tween","actuators","MethodActuator"];
+luxe_tween_actuators_MethodActuator.__name__ = true;
 luxe_tween_actuators_MethodActuator.__super__ = luxe_tween_actuators_SimpleActuator;
 luxe_tween_actuators_MethodActuator.prototype = $extend(luxe_tween_actuators_SimpleActuator.prototype,{
 	apply: function() {
@@ -10790,7 +9949,7 @@ var luxe_tween_actuators_MotionPathActuator = function(target,duration,propertie
 	luxe_tween_actuators_SimpleActuator.call(this,target,duration,properties);
 };
 $hxClasses["luxe.tween.actuators.MotionPathActuator"] = luxe_tween_actuators_MotionPathActuator;
-luxe_tween_actuators_MotionPathActuator.__name__ = ["luxe","tween","actuators","MotionPathActuator"];
+luxe_tween_actuators_MotionPathActuator.__name__ = true;
 luxe_tween_actuators_MotionPathActuator.__super__ = luxe_tween_actuators_SimpleActuator;
 luxe_tween_actuators_MotionPathActuator.prototype = $extend(luxe_tween_actuators_SimpleActuator.prototype,{
 	apply: function() {
@@ -10934,7 +10093,7 @@ var luxe_tween_actuators_PropertyDetails = function(target,propertyName,start,ch
 	this.isField = isField;
 };
 $hxClasses["luxe.tween.actuators.PropertyDetails"] = luxe_tween_actuators_PropertyDetails;
-luxe_tween_actuators_PropertyDetails.__name__ = ["luxe","tween","actuators","PropertyDetails"];
+luxe_tween_actuators_PropertyDetails.__name__ = true;
 luxe_tween_actuators_PropertyDetails.prototype = {
 	__class__: luxe_tween_actuators_PropertyDetails
 };
@@ -10946,14 +10105,14 @@ var luxe_tween_actuators_PropertyPathDetails = function(target,propertyName,path
 	this.path = path;
 };
 $hxClasses["luxe.tween.actuators.PropertyPathDetails"] = luxe_tween_actuators_PropertyPathDetails;
-luxe_tween_actuators_PropertyPathDetails.__name__ = ["luxe","tween","actuators","PropertyPathDetails"];
+luxe_tween_actuators_PropertyPathDetails.__name__ = true;
 luxe_tween_actuators_PropertyPathDetails.__super__ = luxe_tween_actuators_PropertyDetails;
 luxe_tween_actuators_PropertyPathDetails.prototype = $extend(luxe_tween_actuators_PropertyDetails.prototype,{
 	__class__: luxe_tween_actuators_PropertyPathDetails
 });
 var luxe_tween_easing_Linear = function() { };
 $hxClasses["luxe.tween.easing.Linear"] = luxe_tween_easing_Linear;
-luxe_tween_easing_Linear.__name__ = ["luxe","tween","easing","Linear"];
+luxe_tween_easing_Linear.__name__ = true;
 luxe_tween_easing_Linear.__properties__ = {get_easeNone:"get_easeNone"};
 luxe_tween_easing_Linear.get_easeNone = function() {
 	return new luxe_tween_easing_LinearEaseNone();
@@ -10961,7 +10120,7 @@ luxe_tween_easing_Linear.get_easeNone = function() {
 var luxe_tween_easing_LinearEaseNone = function() {
 };
 $hxClasses["luxe.tween.easing.LinearEaseNone"] = luxe_tween_easing_LinearEaseNone;
-luxe_tween_easing_LinearEaseNone.__name__ = ["luxe","tween","easing","LinearEaseNone"];
+luxe_tween_easing_LinearEaseNone.__name__ = true;
 luxe_tween_easing_LinearEaseNone.__interfaces__ = [luxe_tween_easing_IEasing];
 luxe_tween_easing_LinearEaseNone.prototype = {
 	calculate: function(k) {
@@ -10973,7 +10132,7 @@ var luxe_utils_GeometryUtils = function() {
 	this._v_cache = new phoenix_Vector();
 };
 $hxClasses["luxe.utils.GeometryUtils"] = luxe_utils_GeometryUtils;
-luxe_utils_GeometryUtils.__name__ = ["luxe","utils","GeometryUtils"];
+luxe_utils_GeometryUtils.__name__ = true;
 luxe_utils_GeometryUtils.prototype = {
 	segments_for_smooth_circle: function(_radius,_smooth) {
 		if(_smooth == null) {
@@ -10996,7 +10155,7 @@ var luxe_utils_Random = function(_initial_seed) {
 	this.seed = this.initial;
 };
 $hxClasses["luxe.utils.Random"] = luxe_utils_Random;
-luxe_utils_Random.__name__ = ["luxe","utils","Random"];
+luxe_utils_Random.__name__ = true;
 luxe_utils_Random.prototype = {
 	__class__: luxe_utils_Random
 };
@@ -11007,7 +10166,7 @@ var luxe_utils_Utils = function(_luxe) {
 	this._byte_levels = ["bytes","Kb","MB","GB","TB"];
 };
 $hxClasses["luxe.utils.Utils"] = luxe_utils_Utils;
-luxe_utils_Utils.__name__ = ["luxe","utils","Utils"];
+luxe_utils_Utils.__name__ = true;
 luxe_utils_Utils.prototype = {
 	uniqueid: function(val) {
 		if(val == null) {
@@ -11060,12 +10219,12 @@ luxe_utils_Utils.prototype = {
 	}
 	,__class__: luxe_utils_Utils
 };
-var luxe_utils_unifill_Exception = $hxClasses["luxe.utils.unifill.Exception"] = { __ename__ : ["luxe","utils","unifill","Exception"], __constructs__ : ["InvalidCodePoint","InvalidCodeUnitSequence"] };
+var luxe_utils_unifill_Exception = { __ename__ : true, __constructs__ : ["InvalidCodePoint","InvalidCodeUnitSequence"] };
 luxe_utils_unifill_Exception.InvalidCodePoint = function(code) { var $x = ["InvalidCodePoint",0,code]; $x.__enum__ = luxe_utils_unifill_Exception; $x.toString = $estr; return $x; };
 luxe_utils_unifill_Exception.InvalidCodeUnitSequence = function(index) { var $x = ["InvalidCodeUnitSequence",1,index]; $x.__enum__ = luxe_utils_unifill_Exception; $x.toString = $estr; return $x; };
 var luxe_utils_unifill_Unifill = function() { };
 $hxClasses["luxe.utils.unifill.Unifill"] = luxe_utils_unifill_Unifill;
-luxe_utils_unifill_Unifill.__name__ = ["luxe","utils","unifill","Unifill"];
+luxe_utils_unifill_Unifill.__name__ = true;
 luxe_utils_unifill_Unifill.uSplit = function(s,delimiter) {
 	if(delimiter.length == 0) {
 		var _g = [];
@@ -11099,7 +10258,7 @@ luxe_utils_unifill_Unifill.uSplit = function(s,delimiter) {
 };
 var luxe_utils_unifill__$Utf16_Utf16_$Impl_$ = {};
 $hxClasses["luxe.utils.unifill._Utf16.Utf16_Impl_"] = luxe_utils_unifill__$Utf16_Utf16_$Impl_$;
-luxe_utils_unifill__$Utf16_Utf16_$Impl_$.__name__ = ["luxe","utils","unifill","_Utf16","Utf16_Impl_"];
+luxe_utils_unifill__$Utf16_Utf16_$Impl_$.__name__ = true;
 luxe_utils_unifill__$Utf16_Utf16_$Impl_$.codePointAt = function(this1,index) {
 	return luxe_utils_unifill__$Utf16_Utf16Impl.decode_code_point(this1.length,function(i) {
 		return this1.charCodeAt(i);
@@ -11117,7 +10276,7 @@ luxe_utils_unifill__$Utf16_Utf16_$Impl_$.codePointCount = function(this1,beginIn
 };
 var luxe_utils_unifill__$Utf16_Utf16Impl = function() { };
 $hxClasses["luxe.utils.unifill._Utf16.Utf16Impl"] = luxe_utils_unifill__$Utf16_Utf16Impl;
-luxe_utils_unifill__$Utf16_Utf16Impl.__name__ = ["luxe","utils","unifill","_Utf16","Utf16Impl"];
+luxe_utils_unifill__$Utf16_Utf16Impl.__name__ = true;
 luxe_utils_unifill__$Utf16_Utf16Impl.decode_code_point = function(len,accessor,index) {
 	if(index < 0 || len <= index) {
 		throw new js__$Boot_HaxeError(luxe_utils_unifill_Exception.InvalidCodeUnitSequence(index));
@@ -11139,27 +10298,13 @@ luxe_utils_unifill__$Utf16_Utf16Impl.decode_code_point = function(len,accessor,i
 		return hi;
 	}
 };
-var mp_Command = $hxClasses["mp.Command"] = { __ename__ : ["mp","Command"], __constructs__ : ["Join","SetDirection","StartMove","StopMove"] };
-mp_Command.Join = ["Join",0];
-mp_Command.Join.toString = $estr;
-mp_Command.Join.__enum__ = mp_Command;
-mp_Command.SetDirection = function(dir) { var $x = ["SetDirection",1,dir]; $x.__enum__ = mp_Command; $x.toString = $estr; return $x; };
-mp_Command.StartMove = ["StartMove",2];
-mp_Command.StartMove.toString = $estr;
-mp_Command.StartMove.__enum__ = mp_Command;
-mp_Command.StopMove = ["StopMove",3];
-mp_Command.StopMove.toString = $estr;
-mp_Command.StopMove.__enum__ = mp_Command;
-var mp_Message = $hxClasses["mp.Message"] = { __ename__ : ["mp","Message"], __constructs__ : ["Joined","State"] };
-mp_Message.Joined = function(id) { var $x = ["Joined",0,id]; $x.__enum__ = mp_Message; $x.toString = $estr; return $x; };
-mp_Message.State = function(state) { var $x = ["State",1,state]; $x.__enum__ = mp_Message; $x.toString = $estr; return $x; };
 var phoenix_BatchState = function(_r) {
 	this.batcher = _r;
 	this.geom_state = new phoenix_geometry_GeometryState();
 	this.last_geom_state = new phoenix_geometry_GeometryState();
 };
 $hxClasses["phoenix.BatchState"] = phoenix_BatchState;
-phoenix_BatchState.__name__ = ["phoenix","BatchState"];
+phoenix_BatchState.__name__ = true;
 phoenix_BatchState.prototype = {
 	deactivate: function(batcher) {
 		if(this.last_texture_id != null) {
@@ -11321,7 +10466,7 @@ var phoenix_Batcher = function(_r,_name,_max_verts) {
 	phoenix_Batcher.all.push(this);
 };
 $hxClasses["phoenix.Batcher"] = phoenix_Batcher;
-phoenix_Batcher.__name__ = ["phoenix","Batcher"];
+phoenix_Batcher.__name__ = true;
 phoenix_Batcher.prototype = {
 	add: function(_geom,_force_add) {
 		if(_force_add == null) {
@@ -12006,7 +11151,7 @@ var phoenix_BitmapFont = function(_options) {
 	}
 };
 $hxClasses["phoenix.BitmapFont"] = phoenix_BitmapFont;
-phoenix_BitmapFont.__name__ = ["phoenix","BitmapFont"];
+phoenix_BitmapFont.__name__ = true;
 phoenix_BitmapFont.__super__ = luxe_resource_Resource;
 phoenix_BitmapFont.prototype = $extend(luxe_resource_Resource.prototype,{
 	wrap_string_to_bounds: function(_string,_bounds,_point_size,_letter_spc) {
@@ -12291,7 +11436,7 @@ phoenix_BitmapFont.prototype = $extend(luxe_resource_Resource.prototype,{
 	,__class__: phoenix_BitmapFont
 	,__properties__: $extend(luxe_resource_Resource.prototype.__properties__,{set_info:"set_info"})
 });
-var phoenix_ProjectionType = $hxClasses["phoenix.ProjectionType"] = { __ename__ : ["phoenix","ProjectionType"], __constructs__ : ["ortho","perspective","custom"] };
+var phoenix_ProjectionType = { __ename__ : true, __constructs__ : ["ortho","perspective","custom"] };
 phoenix_ProjectionType.ortho = ["ortho",0];
 phoenix_ProjectionType.ortho.toString = $estr;
 phoenix_ProjectionType.ortho.__enum__ = phoenix_ProjectionType;
@@ -12359,7 +11504,7 @@ var phoenix_Camera = function(_options) {
 	this.setup_ = false;
 };
 $hxClasses["phoenix.Camera"] = phoenix_Camera;
-phoenix_Camera.__name__ = ["phoenix","Camera"];
+phoenix_Camera.__name__ = true;
 phoenix_Camera.prototype = {
 	set_ortho: function(_options) {
 		this.projection = phoenix_ProjectionType.ortho;
@@ -13161,7 +12306,7 @@ phoenix_Camera.prototype = {
 	,__class__: phoenix_Camera
 	,__properties__: {set_pos:"set_pos",set_zoom:"set_zoom",set_center:"set_center",set_viewport:"set_viewport"}
 };
-var phoenix_FOVType = $hxClasses["phoenix.FOVType"] = { __ename__ : ["phoenix","FOVType"], __constructs__ : ["vertical","horizontal"] };
+var phoenix_FOVType = { __ename__ : true, __constructs__ : ["vertical","horizontal"] };
 phoenix_FOVType.vertical = ["vertical",0];
 phoenix_FOVType.vertical.toString = $estr;
 phoenix_FOVType.vertical.__enum__ = phoenix_FOVType;
@@ -13174,7 +12319,7 @@ var phoenix_ColorHSL = function() {
 	this.h = 0.0;
 };
 $hxClasses["phoenix.ColorHSL"] = phoenix_ColorHSL;
-phoenix_ColorHSL.__name__ = ["phoenix","ColorHSL"];
+phoenix_ColorHSL.__name__ = true;
 phoenix_ColorHSL.__super__ = phoenix_Color;
 phoenix_ColorHSL.prototype = $extend(phoenix_Color.prototype,{
 	set_h: function(_h) {
@@ -13230,7 +12375,7 @@ var phoenix_ColorHSV = function() {
 	this.h = 0.0;
 };
 $hxClasses["phoenix.ColorHSV"] = phoenix_ColorHSV;
-phoenix_ColorHSV.__name__ = ["phoenix","ColorHSV"];
+phoenix_ColorHSV.__name__ = true;
 phoenix_ColorHSV.__super__ = phoenix_Color;
 phoenix_ColorHSV.prototype = $extend(phoenix_Color.prototype,{
 	set_h: function(_h) {
@@ -13289,7 +12434,7 @@ var phoenix_MatrixTransform = function(p,r,s) {
 	this.scale = s;
 };
 $hxClasses["phoenix.MatrixTransform"] = phoenix_MatrixTransform;
-phoenix_MatrixTransform.__name__ = ["phoenix","MatrixTransform"];
+phoenix_MatrixTransform.__name__ = true;
 phoenix_MatrixTransform.prototype = {
 	__class__: phoenix_MatrixTransform
 };
@@ -13365,7 +12510,7 @@ var phoenix_Matrix = function(n11,n12,n13,n14,n21,n22,n23,n24,n31,n32,n33,n34,n4
 	this._float32array = new Float32Array(this.elements);
 };
 $hxClasses["phoenix.Matrix"] = phoenix_Matrix;
-phoenix_Matrix.__name__ = ["phoenix","Matrix"];
+phoenix_Matrix.__name__ = true;
 phoenix_Matrix.prototype = {
 	__class__: phoenix_Matrix
 };
@@ -13702,7 +12847,7 @@ var phoenix_Quaternion = function(_x,_y,_z,_w) {
 	this._construct = false;
 };
 $hxClasses["phoenix.Quaternion"] = phoenix_Quaternion;
-phoenix_Quaternion.__name__ = ["phoenix","Quaternion"];
+phoenix_Quaternion.__name__ = true;
 phoenix_Quaternion.prototype = {
 	copy: function(_quaternion) {
 		var _y = _quaternion.y;
@@ -15009,7 +14154,7 @@ var phoenix_Rectangle = function(_x,_y,_w,_h) {
 	this.set_h(_h);
 };
 $hxClasses["phoenix.Rectangle"] = phoenix_Rectangle;
-phoenix_Rectangle.__name__ = ["phoenix","Rectangle"];
+phoenix_Rectangle.__name__ = true;
 phoenix_Rectangle.listen = function(_r,listener) {
 	_r.listen_x = listener;
 	_r.listen_y = listener;
@@ -15085,7 +14230,7 @@ var phoenix_RenderPath = function(_renderer) {
 	this.renderer = _renderer;
 };
 $hxClasses["phoenix.RenderPath"] = phoenix_RenderPath;
-phoenix_RenderPath.__name__ = ["phoenix","RenderPath"];
+phoenix_RenderPath.__name__ = true;
 phoenix_RenderPath.prototype = {
 	render: function(_batchers,_stats) {
 		var c = _batchers.length;
@@ -15133,7 +14278,7 @@ var phoenix_RenderState = function(_renderer) {
 	this._viewport = new phoenix_Rectangle(0,0,0,0);
 };
 $hxClasses["phoenix.RenderState"] = phoenix_RenderState;
-phoenix_RenderState.__name__ = ["phoenix","RenderState"];
+phoenix_RenderState.__name__ = true;
 phoenix_RenderState.prototype = {
 	enable: function(what) {
 		switch(what) {
@@ -15286,7 +14431,7 @@ var phoenix_Texture = function(_options) {
 	}
 };
 $hxClasses["phoenix.Texture"] = phoenix_Texture;
-phoenix_Texture.__name__ = ["phoenix","Texture"];
+phoenix_Texture.__name__ = true;
 phoenix_Texture.max_size = function() {
 	return snow_modules_opengl_web_GL.gl.getParameter(3379);
 };
@@ -15448,7 +14593,7 @@ phoenix_Texture.prototype = $extend(luxe_resource_Resource.prototype,{
 });
 var phoenix_RenderTarget = function() { };
 $hxClasses["phoenix.RenderTarget"] = phoenix_RenderTarget;
-phoenix_RenderTarget.__name__ = ["phoenix","RenderTarget"];
+phoenix_RenderTarget.__name__ = true;
 phoenix_RenderTarget.prototype = {
 	__class__: phoenix_RenderTarget
 };
@@ -15460,7 +14605,7 @@ var phoenix_Backbuffer = function(_render_w,_render_h,_render_scale,_fb,_rb) {
 	this.renderbuffer = _rb;
 };
 $hxClasses["phoenix.Backbuffer"] = phoenix_Backbuffer;
-phoenix_Backbuffer.__name__ = ["phoenix","Backbuffer"];
+phoenix_Backbuffer.__name__ = true;
 phoenix_Backbuffer.__interfaces__ = [phoenix_RenderTarget];
 phoenix_Backbuffer.prototype = {
 	__class__: phoenix_Backbuffer
@@ -15476,7 +14621,7 @@ var phoenix_Renderer = function(_core,_asset) {
 	this.backbuffer = new phoenix_Backbuffer(this.core.app.runtime.window.width,this.core.app.runtime.window.height,render_scale_ratio,this.default_framebuffer,this.default_renderbuffer);
 };
 $hxClasses["phoenix.Renderer"] = phoenix_Renderer;
-phoenix_Renderer.__name__ = ["phoenix","Renderer"];
+phoenix_Renderer.__name__ = true;
 phoenix_Renderer.prototype = {
 	init: function() {
 		haxe_Log.trace(" i / renderer / " + ("opengl " + snow_modules_opengl_web_GL.versionString()),{ fileName : "Renderer.hx", lineNumber : 137, className : "phoenix.Renderer", methodName : "init"});
@@ -15627,7 +14772,7 @@ var phoenix_RendererStats = function() {
 	this.batchers = 0;
 };
 $hxClasses["phoenix.RendererStats"] = phoenix_RendererStats;
-phoenix_RendererStats.__name__ = ["phoenix","RendererStats"];
+phoenix_RendererStats.__name__ = true;
 phoenix_RendererStats.prototype = {
 	reset: function() {
 		this.geometry_count = 0;
@@ -15643,7 +14788,7 @@ var phoenix_Uniforms = function() {
 	this.clear();
 };
 $hxClasses["phoenix.Uniforms"] = phoenix_Uniforms;
-phoenix_Uniforms.__name__ = ["phoenix","Uniforms"];
+phoenix_Uniforms.__name__ = true;
 phoenix_Uniforms.prototype = {
 	destroy: function() {
 		this.ints = null;
@@ -15777,7 +14922,7 @@ var phoenix_Shader = function(_options) {
 	this.uniforms = new phoenix_Uniforms();
 };
 $hxClasses["phoenix.Shader"] = phoenix_Shader;
-phoenix_Shader.__name__ = ["phoenix","Shader"];
+phoenix_Shader.__name__ = true;
 phoenix_Shader.__super__ = luxe_resource_Resource;
 phoenix_Shader.prototype = $extend(luxe_resource_Resource.prototype,{
 	'use': function() {
@@ -16059,7 +15204,7 @@ var phoenix_Transform = function() {
 	this._setup = false;
 };
 $hxClasses["phoenix.Transform"] = phoenix_Transform;
-phoenix_Transform.__name__ = ["phoenix","Transform"];
+phoenix_Transform.__name__ = true;
 phoenix_Transform.__super__ = luxe_ID;
 phoenix_Transform.prototype = $extend(luxe_ID.prototype,{
 	destroy: function() {
@@ -16758,7 +15903,7 @@ var phoenix_Spatial = function() {
 	this._setup = false;
 };
 $hxClasses["phoenix.Spatial"] = phoenix_Spatial;
-phoenix_Spatial.__name__ = ["phoenix","Spatial"];
+phoenix_Spatial.__name__ = true;
 phoenix_Spatial.prototype = {
 	set_pos: function(_p) {
 		this.pos = _p;
@@ -16857,7 +16002,7 @@ var phoenix_Vector = function(_x,_y,_z,_w) {
 	this._construct = false;
 };
 $hxClasses["phoenix.Vector"] = phoenix_Vector;
-phoenix_Vector.__name__ = ["phoenix","Vector"];
+phoenix_Vector.__name__ = true;
 phoenix_Vector.prototype = {
 	toString: function() {
 		return "{ x:" + this.x + ", y:" + this.y + ", z:" + this.z + " }";
@@ -16924,7 +16069,7 @@ phoenix_Vector.prototype = {
 };
 var phoenix__$Vector_Vec_$Impl_$ = {};
 $hxClasses["phoenix._Vector.Vec_Impl_"] = phoenix__$Vector_Vec_$Impl_$;
-phoenix__$Vector_Vec_$Impl_$.__name__ = ["phoenix","_Vector","Vec_Impl_"];
+phoenix__$Vector_Vec_$Impl_$.__name__ = true;
 phoenix__$Vector_Vec_$Impl_$._new = function(_x,_y,_z,_w) {
 	var this1 = new phoenix_Vector(_x,_y,_z,_w);
 	return this1;
@@ -16971,13 +16116,13 @@ var phoenix__$Shader_Uniform_$Float = function(_name,_value,_location) {
 	this.location = _location;
 };
 $hxClasses["phoenix._Shader.Uniform_Float"] = phoenix__$Shader_Uniform_$Float;
-phoenix__$Shader_Uniform_$Float.__name__ = ["phoenix","_Shader","Uniform_Float"];
+phoenix__$Shader_Uniform_$Float.__name__ = true;
 phoenix__$Shader_Uniform_$Float.prototype = {
 	__class__: phoenix__$Shader_Uniform_$Float
 };
 var phoenix__$Shader_Uniform_$Int = function() { };
 $hxClasses["phoenix._Shader.Uniform_Int"] = phoenix__$Shader_Uniform_$Int;
-phoenix__$Shader_Uniform_$Int.__name__ = ["phoenix","_Shader","Uniform_Int"];
+phoenix__$Shader_Uniform_$Int.__name__ = true;
 phoenix__$Shader_Uniform_$Int.prototype = {
 	__class__: phoenix__$Shader_Uniform_$Int
 };
@@ -16987,25 +16132,25 @@ var phoenix__$Shader_Uniform_$phoenix_$Color = function(_name,_value,_location) 
 	this.location = _location;
 };
 $hxClasses["phoenix._Shader.Uniform_phoenix_Color"] = phoenix__$Shader_Uniform_$phoenix_$Color;
-phoenix__$Shader_Uniform_$phoenix_$Color.__name__ = ["phoenix","_Shader","Uniform_phoenix_Color"];
+phoenix__$Shader_Uniform_$phoenix_$Color.__name__ = true;
 phoenix__$Shader_Uniform_$phoenix_$Color.prototype = {
 	__class__: phoenix__$Shader_Uniform_$phoenix_$Color
 };
 var phoenix__$Shader_Uniform_$phoenix_$Matrix = function() { };
 $hxClasses["phoenix._Shader.Uniform_phoenix_Matrix"] = phoenix__$Shader_Uniform_$phoenix_$Matrix;
-phoenix__$Shader_Uniform_$phoenix_$Matrix.__name__ = ["phoenix","_Shader","Uniform_phoenix_Matrix"];
+phoenix__$Shader_Uniform_$phoenix_$Matrix.__name__ = true;
 phoenix__$Shader_Uniform_$phoenix_$Matrix.prototype = {
 	__class__: phoenix__$Shader_Uniform_$phoenix_$Matrix
 };
 var phoenix__$Shader_Uniform_$phoenix_$Texture = function() { };
 $hxClasses["phoenix._Shader.Uniform_phoenix_Texture"] = phoenix__$Shader_Uniform_$phoenix_$Texture;
-phoenix__$Shader_Uniform_$phoenix_$Texture.__name__ = ["phoenix","_Shader","Uniform_phoenix_Texture"];
+phoenix__$Shader_Uniform_$phoenix_$Texture.__name__ = true;
 phoenix__$Shader_Uniform_$phoenix_$Texture.prototype = {
 	__class__: phoenix__$Shader_Uniform_$phoenix_$Texture
 };
 var phoenix__$Shader_Uniform_$phoenix_$Vector = function() { };
 $hxClasses["phoenix._Shader.Uniform_phoenix_Vector"] = phoenix__$Shader_Uniform_$phoenix_$Vector;
-phoenix__$Shader_Uniform_$phoenix_$Vector.__name__ = ["phoenix","_Shader","Uniform_phoenix_Vector"];
+phoenix__$Shader_Uniform_$phoenix_$Vector.__name__ = true;
 phoenix__$Shader_Uniform_$phoenix_$Vector.prototype = {
 	__class__: phoenix__$Shader_Uniform_$phoenix_$Vector
 };
@@ -17015,7 +16160,7 @@ var phoenix__$Shader_Uniform_$snow_$api_$buffers_$Float32Array = function(_name,
 	this.location = _location;
 };
 $hxClasses["phoenix._Shader.Uniform_snow_api_buffers_Float32Array"] = phoenix__$Shader_Uniform_$snow_$api_$buffers_$Float32Array;
-phoenix__$Shader_Uniform_$snow_$api_$buffers_$Float32Array.__name__ = ["phoenix","_Shader","Uniform_snow_api_buffers_Float32Array"];
+phoenix__$Shader_Uniform_$snow_$api_$buffers_$Float32Array.__name__ = true;
 phoenix__$Shader_Uniform_$snow_$api_$buffers_$Float32Array.prototype = {
 	__class__: phoenix__$Shader_Uniform_$snow_$api_$buffers_$Float32Array
 };
@@ -17230,7 +16375,7 @@ var phoenix_geometry_Geometry = function(_options) {
 	this.uniforms = new phoenix_Uniforms();
 };
 $hxClasses["phoenix.geometry.Geometry"] = phoenix_geometry_Geometry;
-phoenix_geometry_Geometry.__name__ = ["phoenix","geometry","Geometry"];
+phoenix_geometry_Geometry.__name__ = true;
 phoenix_geometry_Geometry.prototype = {
 	refresh_key: function() {
 		this.key.uuid = this.uuid;
@@ -17593,7 +16738,7 @@ var phoenix_geometry_CircleGeometry = function(_options) {
 	this.set(_options.x,_options.y,_radius_x,_radius_y,_options.steps,_options.start_angle,_options.end_angle);
 };
 $hxClasses["phoenix.geometry.CircleGeometry"] = phoenix_geometry_CircleGeometry;
-phoenix_geometry_CircleGeometry.__name__ = ["phoenix","geometry","CircleGeometry"];
+phoenix_geometry_CircleGeometry.__name__ = true;
 phoenix_geometry_CircleGeometry.__super__ = phoenix_geometry_Geometry;
 phoenix_geometry_CircleGeometry.prototype = $extend(phoenix_geometry_Geometry.prototype,{
 	set: function(_x,_y,_rx,_ry,_steps,_start_angle,_end_angle) {
@@ -17670,7 +16815,7 @@ var phoenix_geometry_GeometryKey = function() {
 	this.timestamp = 0;
 };
 $hxClasses["phoenix.geometry.GeometryKey"] = phoenix_geometry_GeometryKey;
-phoenix_geometry_GeometryKey.__name__ = ["phoenix","geometry","GeometryKey"];
+phoenix_geometry_GeometryKey.__name__ = true;
 phoenix_geometry_GeometryKey.prototype = {
 	__class__: phoenix_geometry_GeometryKey
 };
@@ -17695,7 +16840,7 @@ var phoenix_geometry_GeometryState = function() {
 	this.primitive_type = 0;
 };
 $hxClasses["phoenix.geometry.GeometryState"] = phoenix_geometry_GeometryState;
-phoenix_geometry_GeometryState.__name__ = ["phoenix","geometry","GeometryState"];
+phoenix_geometry_GeometryState.__name__ = true;
 phoenix_geometry_GeometryState.prototype = {
 	__class__: phoenix_geometry_GeometryState
 };
@@ -17942,7 +17087,7 @@ var phoenix_geometry_QuadGeometry = function(_options) {
 	}
 };
 $hxClasses["phoenix.geometry.QuadGeometry"] = phoenix_geometry_QuadGeometry;
-phoenix_geometry_QuadGeometry.__name__ = ["phoenix","geometry","QuadGeometry"];
+phoenix_geometry_QuadGeometry.__name__ = true;
 phoenix_geometry_QuadGeometry.__super__ = phoenix_geometry_Geometry;
 phoenix_geometry_QuadGeometry.prototype = $extend(phoenix_geometry_Geometry.prototype,{
 	resize_xy: function(_x,_y) {
@@ -18315,7 +17460,7 @@ var phoenix_geometry_TextGeometry = function(_options) {
 	this.setup_ = false;
 };
 $hxClasses["phoenix.geometry.TextGeometry"] = phoenix_geometry_TextGeometry;
-phoenix_geometry_TextGeometry.__name__ = ["phoenix","geometry","TextGeometry"];
+phoenix_geometry_TextGeometry.__name__ = true;
 phoenix_geometry_TextGeometry.__super__ = phoenix_geometry_Geometry;
 phoenix_geometry_TextGeometry.prototype = $extend(phoenix_geometry_Geometry.prototype,{
 	drop: function(remove) {
@@ -19164,7 +18309,7 @@ var phoenix_geometry_TextureCoordSet = function() {
 	this.uv7 = new phoenix_geometry_TextureCoord();
 };
 $hxClasses["phoenix.geometry.TextureCoordSet"] = phoenix_geometry_TextureCoordSet;
-phoenix_geometry_TextureCoordSet.__name__ = ["phoenix","geometry","TextureCoordSet"];
+phoenix_geometry_TextureCoordSet.__name__ = true;
 phoenix_geometry_TextureCoordSet.prototype = {
 	__class__: phoenix_geometry_TextureCoordSet
 };
@@ -19191,7 +18336,7 @@ var phoenix_geometry_TextureCoord = function(_u,_v,_w,_t) {
 	this.t = _t;
 };
 $hxClasses["phoenix.geometry.TextureCoord"] = phoenix_geometry_TextureCoord;
-phoenix_geometry_TextureCoord.__name__ = ["phoenix","geometry","TextureCoord"];
+phoenix_geometry_TextureCoord.__name__ = true;
 phoenix_geometry_TextureCoord.prototype = {
 	__class__: phoenix_geometry_TextureCoord
 };
@@ -19202,7 +18347,7 @@ var phoenix_geometry_Vertex = function(_pos,_color,_normal) {
 	this.normal = _normal == null ? new phoenix_Vector() : _normal;
 };
 $hxClasses["phoenix.geometry.Vertex"] = phoenix_geometry_Vertex;
-phoenix_geometry_Vertex.__name__ = ["phoenix","geometry","Vertex"];
+phoenix_geometry_Vertex.__name__ = true;
 phoenix_geometry_Vertex.prototype = {
 	__class__: phoenix_geometry_Vertex
 };
@@ -19294,7 +18439,7 @@ var snow_Snow = function(_host) {
 	}
 };
 $hxClasses["snow.Snow"] = snow_Snow;
-snow_Snow.__name__ = ["snow","Snow"];
+snow_Snow.__name__ = true;
 snow_Snow.prototype = {
 	shutdown: function() {
 		if(this.shutting_down) {
@@ -19462,7 +18607,7 @@ snow_Snow.prototype = {
 	}
 	,__class__: snow_Snow
 };
-var snow_api_DebugError = $hxClasses["snow.api.DebugError"] = { __ename__ : ["snow","api","DebugError"], __constructs__ : ["assertion","null_assertion"] };
+var snow_api_DebugError = { __ename__ : true, __constructs__ : ["assertion","null_assertion"] };
 snow_api_DebugError.assertion = function(expr) { var $x = ["assertion",0,expr]; $x.__enum__ = snow_api_DebugError; $x.toString = $estr; return $x; };
 snow_api_DebugError.null_assertion = function(expr) { var $x = ["null_assertion",1,expr]; $x.__enum__ = snow_api_DebugError; $x.toString = $estr; return $x; };
 var snow_api_Emitter = function() {
@@ -19472,7 +18617,7 @@ var snow_api_Emitter = function() {
 	this.bindings = new haxe_ds_IntMap();
 };
 $hxClasses["snow.api.Emitter"] = snow_api_Emitter;
-snow_api_Emitter.__name__ = ["snow","api","Emitter"];
+snow_api_Emitter.__name__ = true;
 snow_api_Emitter.prototype = {
 	emit: function(event,data) {
 		this._check();
@@ -19524,7 +18669,7 @@ var snow_api_Promise = function(func) {
 	});
 };
 $hxClasses["snow.api.Promise"] = snow_api_Promise;
-snow_api_Promise.__name__ = ["snow","api","Promise"];
+snow_api_Promise.__name__ = true;
 snow_api_Promise.all = function(list) {
 	return new snow_api_Promise(function(ok,no) {
 		var current = 0;
@@ -19670,7 +18815,7 @@ snow_api_Promise.prototype = {
 };
 var snow_api_Promises = function() { };
 $hxClasses["snow.api.Promises"] = snow_api_Promises;
-snow_api_Promises.__name__ = ["snow","api","Promises"];
+snow_api_Promises.__name__ = true;
 snow_api_Promises.step = function() {
 	snow_api_Promises.next();
 	while(snow_api_Promises.defers.length > 0) {
@@ -19702,7 +18847,7 @@ var snow_api_Timer = function(_time) {
 	this.running = true;
 };
 $hxClasses["snow.api.Timer"] = snow_api_Timer;
-snow_api_Timer.__name__ = ["snow","api","Timer"];
+snow_api_Timer.__name__ = true;
 snow_api_Timer.update = function() {
 	var now = window.performance.now() / 1000.0 - snow_core_web_Runtime.timestamp_start;
 	var _g = 0;
@@ -19731,16 +18876,16 @@ snow_api_Timer.prototype = {
 };
 var snow_modules_interfaces_Audio = function() { };
 $hxClasses["snow.modules.interfaces.Audio"] = snow_modules_interfaces_Audio;
-snow_modules_interfaces_Audio.__name__ = ["snow","modules","interfaces","Audio"];
+snow_modules_interfaces_Audio.__name__ = true;
 var snow_core_Extension = function() { };
 $hxClasses["snow.core.Extension"] = snow_core_Extension;
-snow_core_Extension.__name__ = ["snow","core","Extension"];
+snow_core_Extension.__name__ = true;
 snow_core_Extension.prototype = {
 	__class__: snow_core_Extension
 };
 var snow_core_Runtime = function() { };
 $hxClasses["snow.core.Runtime"] = snow_core_Runtime;
-snow_core_Runtime.__name__ = ["snow","core","Runtime"];
+snow_core_Runtime.__name__ = true;
 var snow_core_web_Runtime = function(_app) {
 	this.p_body_margin = "0";
 	this.p_body_overflow = "0";
@@ -19786,7 +18931,7 @@ var snow_core_web_Runtime = function(_app) {
 	haxe_Log.trace("  i / runtime / " + "web / init ok",{ fileName : "Runtime.hx", lineNumber : 67, className : "snow.core.web.Runtime", methodName : "new"});
 };
 $hxClasses["snow.core.web.Runtime"] = snow_core_web_Runtime;
-snow_core_web_Runtime.__name__ = ["snow","core","web","Runtime"];
+snow_core_web_Runtime.__name__ = true;
 snow_core_web_Runtime.__interfaces__ = [snow_core_Runtime];
 snow_core_web_Runtime.timestamp = function() {
 	return window.performance.now() / 1000.0 - snow_core_web_Runtime.timestamp_start;
@@ -20477,7 +19622,7 @@ snow_core_web_Runtime.prototype = {
 };
 var snow_core_web__$Runtime_DOMKeys = function() { };
 $hxClasses["snow.core.web._Runtime.DOMKeys"] = snow_core_web__$Runtime_DOMKeys;
-snow_core_web__$Runtime_DOMKeys.__name__ = ["snow","core","web","_Runtime","DOMKeys"];
+snow_core_web__$Runtime_DOMKeys.__name__ = true;
 snow_core_web__$Runtime_DOMKeys.dom_key_to_keycode = function(_keycode) {
 	switch(_keycode) {
 	case 16:
@@ -20657,12 +19802,12 @@ snow_core_web__$Runtime_DOMKeys.dom_key_to_keycode = function(_keycode) {
 };
 var snow_modules_interfaces_Assets = function() { };
 $hxClasses["snow.modules.interfaces.Assets"] = snow_modules_interfaces_Assets;
-snow_modules_interfaces_Assets.__name__ = ["snow","modules","interfaces","Assets"];
+snow_modules_interfaces_Assets.__name__ = true;
 var snow_core_web_assets_Assets = function(_app) {
 	this.app = _app;
 };
 $hxClasses["snow.core.web.assets.Assets"] = snow_core_web_assets_Assets;
-snow_core_web_assets_Assets.__name__ = ["snow","core","web","assets","Assets"];
+snow_core_web_assets_Assets.__name__ = true;
 snow_core_web_assets_Assets.__interfaces__ = [snow_modules_interfaces_Assets];
 snow_core_web_assets_Assets.prototype = {
 	onevent: function(event) {
@@ -20785,12 +19930,12 @@ snow_core_web_assets_Assets.prototype = {
 };
 var snow_modules_interfaces_IO = function() { };
 $hxClasses["snow.modules.interfaces.IO"] = snow_modules_interfaces_IO;
-snow_modules_interfaces_IO.__name__ = ["snow","modules","interfaces","IO"];
+snow_modules_interfaces_IO.__name__ = true;
 var snow_core_web_io_IO = function(_app) {
 	this.app = _app;
 };
 $hxClasses["snow.core.web.io.IO"] = snow_core_web_io_IO;
-snow_core_web_io_IO.__name__ = ["snow","core","web","io","IO"];
+snow_core_web_io_IO.__name__ = true;
 snow_core_web_io_IO.__interfaces__ = [snow_modules_interfaces_IO];
 snow_core_web_io_IO.prototype = {
 	shutdown: function() {
@@ -20919,7 +20064,7 @@ snow_core_web_io_IO.prototype = {
 };
 var snow_modules_opengl_web_GL = function() { };
 $hxClasses["snow.modules.opengl.web.GL"] = snow_modules_opengl_web_GL;
-snow_modules_opengl_web_GL.__name__ = ["snow","modules","opengl","web","GL"];
+snow_modules_opengl_web_GL.__name__ = true;
 snow_modules_opengl_web_GL.versionString = function() {
 	var ver = snow_modules_opengl_web_GL.gl.getParameter(7938);
 	var slver = snow_modules_opengl_web_GL.gl.getParameter(35724);
@@ -20950,7 +20095,7 @@ var snow_modules_webaudio_Audio = function(_app) {
 	this.active = true;
 };
 $hxClasses["snow.modules.webaudio.Audio"] = snow_modules_webaudio_Audio;
-snow_modules_webaudio_Audio.__name__ = ["snow","modules","webaudio","Audio"];
+snow_modules_webaudio_Audio.__name__ = true;
 snow_modules_webaudio_Audio.__interfaces__ = [snow_modules_interfaces_Audio];
 snow_modules_webaudio_Audio.prototype = {
 	shutdown: function() {
@@ -21380,7 +20525,7 @@ var snow_types_AudioData = function(_app,_options) {
 	_options = null;
 };
 $hxClasses["snow.types.AudioData"] = snow_types_AudioData;
-snow_types_AudioData.__name__ = ["snow","types","AudioData"];
+snow_types_AudioData.__name__ = true;
 snow_types_AudioData.prototype = {
 	destroy: function() {
 		this.id = null;
@@ -21395,7 +20540,7 @@ var snow_modules_webaudio__$Audio_AudioDataWebAudio = function(_app,_buffer,_med
 	snow_types_AudioData.call(this,_app,_opt);
 };
 $hxClasses["snow.modules.webaudio._Audio.AudioDataWebAudio"] = snow_modules_webaudio__$Audio_AudioDataWebAudio;
-snow_modules_webaudio__$Audio_AudioDataWebAudio.__name__ = ["snow","modules","webaudio","_Audio","AudioDataWebAudio"];
+snow_modules_webaudio__$Audio_AudioDataWebAudio.__name__ = true;
 snow_modules_webaudio__$Audio_AudioDataWebAudio.__super__ = snow_types_AudioData;
 snow_modules_webaudio__$Audio_AudioDataWebAudio.prototype = $extend(snow_types_AudioData.prototype,{
 	destroy: function() {
@@ -21421,7 +20566,7 @@ var snow_systems_assets_Asset = function(_system,_id,_type) {
 	this.id = _id;
 };
 $hxClasses["snow.systems.assets.Asset"] = snow_systems_assets_Asset;
-snow_systems_assets_Asset.__name__ = ["snow","systems","assets","Asset"];
+snow_systems_assets_Asset.__name__ = true;
 snow_systems_assets_Asset.prototype = {
 	__class__: snow_systems_assets_Asset
 };
@@ -21430,7 +20575,7 @@ var snow_systems_assets_AssetImage = function(_system,_id,_image) {
 	this.set_image(_image);
 };
 $hxClasses["snow.systems.assets.AssetImage"] = snow_systems_assets_AssetImage;
-snow_systems_assets_AssetImage.__name__ = ["snow","systems","assets","AssetImage"];
+snow_systems_assets_AssetImage.__name__ = true;
 snow_systems_assets_AssetImage.load = function(_system,_id) {
 	if(_id == null) {
 		throw new js__$Boot_HaxeError(snow_api_DebugError.null_assertion("_id was null"));
@@ -21497,7 +20642,7 @@ var snow_systems_assets_AssetAudio = function(_system,_id,_audio) {
 	this.set_audio(_audio);
 };
 $hxClasses["snow.systems.assets.AssetAudio"] = snow_systems_assets_AssetAudio;
-snow_systems_assets_AssetAudio.__name__ = ["snow","systems","assets","AssetAudio"];
+snow_systems_assets_AssetAudio.__name__ = true;
 snow_systems_assets_AssetAudio.load = function(_system,_id,_is_stream) {
 	if(_is_stream == null) {
 		_is_stream = false;
@@ -21542,7 +20687,7 @@ var snow_systems_assets_AssetBytes = function(_system,_id,_bytes) {
 	this.set_bytes(_bytes);
 };
 $hxClasses["snow.systems.assets.AssetBytes"] = snow_systems_assets_AssetBytes;
-snow_systems_assets_AssetBytes.__name__ = ["snow","systems","assets","AssetBytes"];
+snow_systems_assets_AssetBytes.__name__ = true;
 snow_systems_assets_AssetBytes.load = function(_system,_id) {
 	return new snow_systems_assets_AssetBytes(_system,_id,null).reload();
 };
@@ -21572,7 +20717,7 @@ var snow_systems_assets_AssetText = function(_system,_id,_text) {
 	this.set_text(_text);
 };
 $hxClasses["snow.systems.assets.AssetText"] = snow_systems_assets_AssetText;
-snow_systems_assets_AssetText.__name__ = ["snow","systems","assets","AssetText"];
+snow_systems_assets_AssetText.__name__ = true;
 snow_systems_assets_AssetText.load = function(_system,_id) {
 	return new snow_systems_assets_AssetText(_system,_id,null).reload();
 };
@@ -21610,7 +20755,7 @@ var snow_systems_assets_AssetJSON = function(_system,_id,_json) {
 	this.set_json(_json);
 };
 $hxClasses["snow.systems.assets.AssetJSON"] = snow_systems_assets_AssetJSON;
-snow_systems_assets_AssetJSON.__name__ = ["snow","systems","assets","AssetJSON"];
+snow_systems_assets_AssetJSON.__name__ = true;
 snow_systems_assets_AssetJSON.load = function(_system,_id) {
 	return new snow_systems_assets_AssetJSON(_system,_id,null).reload();
 };
@@ -21658,7 +20803,7 @@ var snow_systems_assets_Assets = function(_app) {
 	this.module = new snow_core_web_assets_Assets(this.app);
 };
 $hxClasses["snow.systems.assets.Assets"] = snow_systems_assets_Assets;
-snow_systems_assets_Assets.__name__ = ["snow","systems","assets","Assets"];
+snow_systems_assets_Assets.__name__ = true;
 snow_systems_assets_Assets.prototype = {
 	shutdown: function() {
 		this.module.shutdown();
@@ -21673,7 +20818,7 @@ var snow_systems_audio_Audio = function(_app) {
 	this.active = this.module.active;
 };
 $hxClasses["snow.systems.audio.Audio"] = snow_systems_audio_Audio;
-snow_systems_audio_Audio.__name__ = ["snow","systems","audio","Audio"];
+snow_systems_audio_Audio.__name__ = true;
 snow_systems_audio_Audio.prototype = {
 	emit_Int: function(_event,_data) {
 		this.emitter.emit(_event,_data);
@@ -21722,7 +20867,7 @@ var snow_systems_audio_AudioInstance = function(_source,_handle) {
 	this.handle = _handle;
 };
 $hxClasses["snow.systems.audio.AudioInstance"] = snow_systems_audio_AudioInstance;
-snow_systems_audio_AudioInstance.__name__ = ["snow","systems","audio","AudioInstance"];
+snow_systems_audio_AudioInstance.__name__ = true;
 snow_systems_audio_AudioInstance.prototype = {
 	destroy: function() {
 		if(this.destroyed != false) {
@@ -21742,7 +20887,7 @@ var snow_systems_audio_AudioSource = function(_app,_data) {
 	this.instances = [];
 };
 $hxClasses["snow.systems.audio.AudioSource"] = snow_systems_audio_AudioSource;
-snow_systems_audio_AudioSource.__name__ = ["snow","systems","audio","AudioSource"];
+snow_systems_audio_AudioSource.__name__ = true;
 snow_systems_audio_AudioSource.prototype = {
 	instance: function(_handle) {
 		var _instance = new snow_systems_audio_AudioInstance(this,_handle);
@@ -21826,7 +20971,7 @@ var snow_systems_input_Input = function(_app) {
 	this.touches_down = new haxe_ds_IntMap();
 };
 $hxClasses["snow.systems.input.Input"] = snow_systems_input_Input;
-snow_systems_input_Input.__name__ = ["snow","systems","input","Input"];
+snow_systems_input_Input.__name__ = true;
 snow_systems_input_Input.prototype = {
 	shutdown: function() {
 	}
@@ -22270,7 +21415,7 @@ snow_systems_input_Input.prototype = {
 };
 var snow_systems_input_Keycodes = function() { };
 $hxClasses["snow.systems.input.Keycodes"] = snow_systems_input_Keycodes;
-snow_systems_input_Keycodes.__name__ = ["snow","systems","input","Keycodes"];
+snow_systems_input_Keycodes.__name__ = true;
 snow_systems_input_Keycodes.to_scan = function(keycode) {
 	if((keycode & 1073741824) != 0) {
 		return keycode & -1073741825;
@@ -22381,7 +21526,7 @@ var snow_systems_io_IO = function(_app) {
 	this.module = new snow_core_web_io_IO(this.app);
 };
 $hxClasses["snow.systems.io.IO"] = snow_systems_io_IO;
-snow_systems_io_IO.__name__ = ["snow","systems","io","IO"];
+snow_systems_io_IO.__name__ = true;
 snow_systems_io_IO.prototype = {
 	data_flow: function(_id,_processor,_provider) {
 		var _gthis = this;
@@ -22408,8 +21553,8 @@ snow_systems_io_IO.prototype = {
 };
 var snow_types_Config = function() { };
 $hxClasses["snow.types.Config"] = snow_types_Config;
-snow_types_Config.__name__ = ["snow","types","Config"];
-var snow_types_Error = $hxClasses["snow.types.Error"] = { __ename__ : ["snow","types","Error"], __constructs__ : ["error","init","parse"] };
+snow_types_Config.__name__ = true;
+var snow_types_Error = { __ename__ : true, __constructs__ : ["error","init","parse"] };
 snow_types_Error.error = function(value) { var $x = ["error",0,value]; $x.__enum__ = snow_types_Error; $x.toString = $estr; return $x; };
 snow_types_Error.init = function(value) { var $x = ["init",1,value]; $x.__enum__ = snow_types_Error; $x.toString = $estr; return $x; };
 snow_types_Error.parse = function(value) { var $x = ["parse",2,value]; $x.__enum__ = snow_types_Error; $x.toString = $estr; return $x; };
@@ -22439,14 +21584,14 @@ var snow_types_ImageData = function(_app,_options) {
 	_options = null;
 };
 $hxClasses["snow.types.ImageData"] = snow_types_ImageData;
-snow_types_ImageData.__name__ = ["snow","types","ImageData"];
+snow_types_ImageData.__name__ = true;
 snow_types_ImageData.prototype = {
 	__class__: snow_types_ImageData
 };
 var snow_types_SystemEvent = function() {
 };
 $hxClasses["snow.types.SystemEvent"] = snow_types_SystemEvent;
-snow_types_SystemEvent.__name__ = ["snow","types","SystemEvent"];
+snow_types_SystemEvent.__name__ = true;
 snow_types_SystemEvent.prototype = {
 	__class__: snow_types_SystemEvent
 };
@@ -22456,42 +21601,42 @@ var snow_types_WindowEvent = function() {
 	this.type = 0;
 };
 $hxClasses["snow.types.WindowEvent"] = snow_types_WindowEvent;
-snow_types_WindowEvent.__name__ = ["snow","types","WindowEvent"];
+snow_types_WindowEvent.__name__ = true;
 snow_types_WindowEvent.prototype = {
 	__class__: snow_types_WindowEvent
 };
 var snow_types_KeyEvent = function() {
 };
 $hxClasses["snow.types.KeyEvent"] = snow_types_KeyEvent;
-snow_types_KeyEvent.__name__ = ["snow","types","KeyEvent"];
+snow_types_KeyEvent.__name__ = true;
 snow_types_KeyEvent.prototype = {
 	__class__: snow_types_KeyEvent
 };
 var snow_types_TextEvent = function() {
 };
 $hxClasses["snow.types.TextEvent"] = snow_types_TextEvent;
-snow_types_TextEvent.__name__ = ["snow","types","TextEvent"];
+snow_types_TextEvent.__name__ = true;
 snow_types_TextEvent.prototype = {
 	__class__: snow_types_TextEvent
 };
 var snow_types_MouseEvent = function() {
 };
 $hxClasses["snow.types.MouseEvent"] = snow_types_MouseEvent;
-snow_types_MouseEvent.__name__ = ["snow","types","MouseEvent"];
+snow_types_MouseEvent.__name__ = true;
 snow_types_MouseEvent.prototype = {
 	__class__: snow_types_MouseEvent
 };
 var snow_types_TouchEvent = function() {
 };
 $hxClasses["snow.types.TouchEvent"] = snow_types_TouchEvent;
-snow_types_TouchEvent.__name__ = ["snow","types","TouchEvent"];
+snow_types_TouchEvent.__name__ = true;
 snow_types_TouchEvent.prototype = {
 	__class__: snow_types_TouchEvent
 };
 var snow_types_GamepadEvent = function() {
 };
 $hxClasses["snow.types.GamepadEvent"] = snow_types_GamepadEvent;
-snow_types_GamepadEvent.__name__ = ["snow","types","GamepadEvent"];
+snow_types_GamepadEvent.__name__ = true;
 snow_types_GamepadEvent.prototype = {
 	__class__: snow_types_GamepadEvent
 };
@@ -22500,7 +21645,7 @@ var snow_types_InputEvent = function() {
 	this.timestamp = 0.0;
 };
 $hxClasses["snow.types.InputEvent"] = snow_types_InputEvent;
-snow_types_InputEvent.__name__ = ["snow","types","InputEvent"];
+snow_types_InputEvent.__name__ = true;
 snow_types_InputEvent.prototype = {
 	__class__: snow_types_InputEvent
 };
@@ -22523,7 +21668,7 @@ var snow_types_ModState = function() {
 	this.none = false;
 };
 $hxClasses["snow.types.ModState"] = snow_types_ModState;
-snow_types_ModState.__name__ = ["snow","types","ModState"];
+snow_types_ModState.__name__ = true;
 snow_types_ModState.prototype = {
 	__class__: snow_types_ModState
 };
@@ -22532,16 +21677,14 @@ var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
 $hxClasses["Math"] = Math;
 String.prototype.__class__ = $hxClasses["String"] = String;
-String.__name__ = ["String"];
+String.__name__ = true;
 $hxClasses["Array"] = Array;
-Array.__name__ = ["Array"];
-Date.prototype.__class__ = $hxClasses["Date"] = Date;
-Date.__name__ = ["Date"];
+Array.__name__ = true;
 var Int = $hxClasses["Int"] = { __name__ : ["Int"]};
 var Dynamic = $hxClasses["Dynamic"] = { __name__ : ["Dynamic"]};
 var Float = $hxClasses["Float"] = Number;
 Float.__name__ = ["Float"];
-var Bool = $hxClasses["Bool"] = Boolean;
+var Bool = Boolean;
 Bool.__ename__ = ["Bool"];
 var Class = $hxClasses["Class"] = { __name__ : ["Class"]};
 var Enum = { };
@@ -22553,11 +21696,6 @@ if(ArrayBuffer.prototype.slice == null) {
 }
 var Float32Array = $global.Float32Array || js_html_compat_Float32Array._new;
 var Uint8Array = $global.Uint8Array || js_html_compat_Uint8Array._new;
-haxe_Serializer.USE_CACHE = false;
-haxe_Serializer.USE_ENUM_INDEX = false;
-haxe_Serializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
-haxe_Unserializer.DEFAULT_RESOLVER = new haxe__$Unserializer_DefaultResolver();
-haxe_Unserializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
 haxe_crypto_Base64.CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 haxe_crypto_Base64.BYTES = haxe_io_Bytes.ofString(haxe_crypto_Base64.CHARS);
 haxe_ds_ObjectMap.count = 0;
