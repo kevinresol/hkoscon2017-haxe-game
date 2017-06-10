@@ -26,6 +26,9 @@ Get Node.js from https://nodejs.org/, and optionally [yarn](https://yarnpkg.com/
 
 ### Install Haxe Libraries
 
+Note: if it is the first time you are using `haxelib`, you will have to run `haxelib setup` first.
+ 
+
  * [Luxe](https://luxeengine.com). According to the instruction at https://luxeengine.com/get/:
 
    ```bash
