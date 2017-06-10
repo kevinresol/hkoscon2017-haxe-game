@@ -57,7 +57,17 @@ Depending on your OS, [Visual Studio](https://www.visualstudio.com/) (Windows), 
 
 ## Notes
 
-We will introduce Haxe and go through creating a simple multi-player game during the workshop together. The instruction will be given during the workshop. Below is some notes for future reference.
+We will introduce Haxe and go through creating a simple multi-player game during the workshop together. The instruction will be given during the workshop. Below are some notes for future reference.
+
+### quick links
+
+ * Haxe Manual: http://haxe.org/manual/introduction.html
+ * Haxe API docs: https://devdocs.io/ (or http://api.haxe.org/)
+ * Try Haxe: https://try.haxe.org/
+ * Luxe engine beginners guide: https://luxeengine.com/guide/
+ * Luxe engine API docs: https://luxeengine.com/docs/api/
+ * `haxe-ws` library: http://lib.haxe.org/p/haxe-ws
+ * `ws` npm package: https://www.npmjs.com/package/ws#usage-examples
 
 ### Server
 
