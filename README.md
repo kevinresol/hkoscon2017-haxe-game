@@ -24,6 +24,10 @@ Get Haxe from http://haxe.org/download/.
 
 Get Node.js from https://nodejs.org/, and optionally [yarn](https://yarnpkg.com/).
 
+### Install Git (used by snowfall)
+
+Get [Git](https://git-scm.com/) and make it available in the command line. i.e. `git --version` should print something like `git version 2.7.4`.
+
 ### Install Haxe Libraries
 
 Note: if it is the first time you are using `haxelib`, you will have to run `haxelib setup` first.
